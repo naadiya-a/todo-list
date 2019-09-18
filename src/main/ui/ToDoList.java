@@ -1,11 +1,12 @@
 package ui;
 
 import java.util.Scanner;
-import model.Tasks;
+import java.util.ArrayList;
 
 public class ToDoList {
 
     private Scanner scanner;
+    private ArrayList<String> tasks;
 
     public static void main(String[] args) {
         new ToDoList();
@@ -13,37 +14,53 @@ public class ToDoList {
 
     public ToDoList() {
         scanner = new Scanner(System.in);
+        tasks = new ArrayList<>();
         chooseAction();
     }
 
-    // EFFECTS: gives user options and allows them to select one
+//    Reference: https://stackoverflow.com/questions/31152539/how-to-make-a-functioning-to-do-list-in-java
     private void chooseAction() {
-        System.out.println("Would you like to:");
-        System.out.println("[1] Add new task");
-        System.out.println("[2] Mark a completed task");
-        System.out.println("[3] Edit settings for a task");
-        System.out.println("[4] Delete a task");
-        int action = scanner.nextInt();
-        performAction(action);
+        int action = 0;
+        while (action < 4) {
+            System.out.println("Would you like to:");
+            System.out.println("[1] Add new task");
+            System.out.println("[2] Mark a completed task");
+            System.out.println("[3] View your ToDo List");
+            System.out.println("[4] Exit");
+            action = scanner.nextInt();
+            performAction(action);
+        }
     }
 
-    // EFFECTS: begins executing action based on user input
     private void performAction(int i) {
         if (i == 1) {
-            Tasks.addTask();
-            System.out.println("Let's add a new task!");
+            String newTask = addTask();
+            System.out.println("'" + newTask + "' has been added to the list!");
         }
         if (i == 2) {
-            Tasks.completeTask();
-            System.out.println("Congrats! We can cross one off.");
+            String completeTask = completeTask();
+            System.out.println("'" + completeTask + "' has been marked as complete!");
         }
-        if (i == 3) {
-            Tasks.editTask();
-            System.out.println("Let's edit the reminder settings.");
+        if (i == 3 || i == 4) {
+            System.out.println("ToDo List:");
+            System.out.println(tasks);
         }
-        if (i == 4) {
-            Tasks.deleteTask();
-            System.out.println("One less thing to worry about!");
-        }
+    }
+
+    private String addTask() {
+        System.out.println("Type in the task you want to add");
+        scanner.nextLine();
+        String t = scanner.nextLine();
+        tasks.add(t);
+        return t;
+    }
+
+    private String completeTask() {
+        System.out.println(tasks);
+        System.out.println("Enter the number of the completed task");
+        int i = scanner.nextInt();
+        String complete = tasks.get(i - 1);
+        tasks.set(i - 1, "✓ " + complete);
+        return complete;
     }
 }
