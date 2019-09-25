@@ -25,15 +25,12 @@ public class Task {
         this.taskName = name;
     }
 
-    // EFFECTS: gets due date for task
-    //          and gives user confirmation of assigned due date
-    public void inputDueDate() {
+    private void inputDueDate() {
         System.out.println("Type in the due date as: MM/DD/YYYY");
         String date = scanner.nextLine();
         setDueDate(date);
         System.out.println(this.taskName + " is due at " + this.dueDate);
     }
-
 
 //    Reference: https://stackoverflow.com/questions/11665195/unhandled-exception-type-parseexception
     // MODIFIES: this

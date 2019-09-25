@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class ToDoList {
 
     private Scanner scanner;
-    private ArrayList<Task> taskList;
+    public ArrayList<Task> taskList;
 
     public ToDoList() {
         scanner = new Scanner(System.in);
@@ -17,7 +17,6 @@ public class ToDoList {
     }
 
     //    Reference: https://stackoverflow.com/questions/31152539/how-to-make-a-functioning-to-do-list-in-java
-    // EFFECTS: gives user options to choose from
     private void inputAction() {
         int action = 0;
         while (action < 4) {
@@ -31,7 +30,6 @@ public class ToDoList {
         }
     }
 
-    // EFFECTS: provides confirmation feedback to user
     public void performAction(int i) {
         if (i == 1) {
             String newTaskName = inputNewTask();
@@ -77,8 +75,7 @@ public class ToDoList {
         return name;
     }
 
-    // EFFECTS: finds task from list to be marked as complete
-    public void completeTask(String completeTaskName) {
+    private void completeTask(String completeTaskName) {
         for (Task t : taskList) {
             if (t.taskName.equals(completeTaskName)) {
                 t.isCompleted();
