@@ -26,7 +26,7 @@ public class TestTask {
     public void testSetName() {
         String name = "Test!";
         testTask.setName(name);
-        assertEquals("Test!", testTask.taskName);
+        assertEquals("Test!", testTask.getTaskName());
     }
 
     @Test
@@ -34,20 +34,20 @@ public class TestTask {
         String date = "01/02/2020";
         testTask.setDueDate(date);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        String dueDateAsString = sdf.format(testTask.dueDate);
+        String dueDateAsString = sdf.format(testTask.getDueDate());
         assertEquals("01/02/2020", dueDateAsString);
     }
 
     @Test
     public void testIsCompletedFalse() {
-        assertFalse(testTask.completed);
+        assertFalse(testTask.getCompleted());
     }
 
     @Test
     public void testIsCompletedTrue() {
         testTask.setName("Test!");
         testTask.isCompleted();
-        assertTrue(testTask.completed);
-        assertEquals("✓ Test!", testTask.taskName);
+        assertTrue(testTask.getCompleted());
+        assertEquals("✓ Test!", testTask.getTaskName());
     }
 }

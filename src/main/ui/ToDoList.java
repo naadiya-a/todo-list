@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class ToDoList {
 
     private Scanner scanner;
-    public ArrayList<Task> taskList;
+    private ArrayList<Task> taskList;
 
     public ToDoList() {
         scanner = new Scanner(System.in);
@@ -43,7 +43,7 @@ public class ToDoList {
             System.out.println("ToDo List:");
 //            System.out.println(Arrays.toString(taskList)); !!! remove
             for (Task t : taskList) {
-                System.out.println(t.taskName);
+                System.out.println(t.getTaskName());
             }
         }
     }
@@ -77,9 +77,13 @@ public class ToDoList {
 
     private void completeTask(String completeTaskName) {
         for (Task t : taskList) {
-            if (t.taskName.equals(completeTaskName)) {
+            if (t.getTaskName().equals(completeTaskName)) {
                 t.isCompleted();
             }
         }
+    }
+
+    public ArrayList<Task> getTaskList() {
+        return this.taskList;
     }
 }

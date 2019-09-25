@@ -7,9 +7,11 @@ import java.util.Scanner;
 
 public class Task {
 
-    public String taskName;
-    public Date dueDate;
-    public boolean completed;
+    // !!! make private and add getters
+
+    private String taskName;
+    private Date dueDate;
+    private boolean completed;
     private Scanner scanner;
 
     public Task(String name) {
@@ -50,5 +52,17 @@ public class Task {
     public void isCompleted() {
         this.setName("✓ " + this.taskName);
         this.completed = true;
+    }
+
+    public String getTaskName() {
+        return this.taskName;
+    }
+
+    public Date getDueDate() {
+        return this.dueDate;
+    }
+
+    public boolean getCompleted() {
+        return this.completed;
     }
 }
