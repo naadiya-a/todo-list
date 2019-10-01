@@ -1,18 +1,18 @@
 package ui;
 
 import model.Task;
+import model.ToDoList;
 
 import java.util.Scanner;
-import java.util.ArrayList;
 
-public class ToDoList {
+public class UserInput {
 
     private Scanner scanner;
-    private ArrayList<Task> taskList;
+    private ToDoList toDoList;
 
-    public ToDoList() {
+    public UserInput() {
         scanner = new Scanner(System.in);
-        taskList = new ArrayList<>();
+        toDoList = new ToDoList();
         inputAction();
     }
 
@@ -32,17 +32,16 @@ public class ToDoList {
 
     public void performAction(int i) {
         if (i == 1) {
-            String newTaskName = inputNewTask();
-            System.out.println("'" + newTaskName + "' has been added to the list!");
+//            inputNewTask();
+            toDoList.addTask(inputNewTask(), inputDueDate());
         }
         if (i == 2) {
-            String completedTask = inputCompleteTask();
-            System.out.println("'" + completedTask + "' has been marked as complete!");
+            inputCompleteTask();
+            System.out.println("The task has been marked as complete!");
         }
         if (i == 3 || i == 4) {
             System.out.println("ToDo List:");
-//            System.out.println(Arrays.toString(taskList)); !!! remove
-            for (Task t : taskList) {
+            for (Task t : toDoList.getTaskList()) {
                 System.out.println(t.getTaskName());
             }
         }
@@ -53,37 +52,22 @@ public class ToDoList {
     public String inputNewTask() {
         System.out.println("Type in the task you want to add");
         scanner.nextLine();
-        String name = scanner.nextLine();
-        addTask(name);
-        return name;
+//        String name = scanner.nextLine();
+//        toDoList.addTask(name);
+        return scanner.nextLine();
     }
 
-    // MODIFIES: taskList
-    // EFFECTS: adds new task to taskList
-    public void addTask(String newTaskName) {
-        Task newTask = new Task(newTaskName);
-        taskList.add(newTask);
+    private String inputDueDate() {
+        System.out.println("Type in the due date as: MM/DD/YYYY");
+        return scanner.nextLine();
     }
 
     // EFFECTS: gets name of completed task
     //          and returns the name
-    public String inputCompleteTask() {
+    public void inputCompleteTask() {
         System.out.println("Enter the name of the completed task");
         scanner.nextLine();
         String name = scanner.nextLine();
-        completeTask(name);
-        return name;
-    }
-
-    private void completeTask(String completeTaskName) {
-        for (Task t : taskList) {
-            if (t.getTaskName().equals(completeTaskName)) {
-                t.isCompleted();
-            }
-        }
-    }
-
-    public ArrayList<Task> getTaskList() {
-        return this.taskList;
+        toDoList.completeTask(name);
     }
 }

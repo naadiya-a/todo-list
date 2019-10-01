@@ -7,17 +7,13 @@ import java.util.Scanner;
 
 public class Task {
 
-    // !!! make private and add getters
-
     private String taskName;
     private Date dueDate;
     private boolean completed;
-    private Scanner scanner;
 
-    public Task(String name) {
-        scanner = new Scanner(System.in);
+    public Task(String name, String dueDate) {
         setName(name);
-        inputDueDate();
+        setDueDate(dueDate);
         completed = false;
     }
 
@@ -25,13 +21,6 @@ public class Task {
     // EFFECTS: assigns name to the task
     public void setName(String name) {
         this.taskName = name;
-    }
-
-    private void inputDueDate() {
-        System.out.println("Type in the due date as: MM/DD/YYYY");
-        String date = scanner.nextLine();
-        setDueDate(date);
-        System.out.println(this.taskName + " is due at " + this.dueDate);
     }
 
 //    Reference: https://stackoverflow.com/questions/11665195/unhandled-exception-type-parseexception
@@ -44,6 +33,7 @@ public class Task {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println(this.taskName + " is due at " + this.dueDate);
     }
 
     // MODIFIES: this

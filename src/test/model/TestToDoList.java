@@ -1,6 +1,7 @@
-package ui;
+package model;
 
 import model.Task;
+import model.ToDoList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,18 +17,12 @@ public class TestToDoList {
 
     @BeforeEach
     public void setup() {
-        String input = "4";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
         todo = new ToDoList();
     }
 
     @Test
     public void testAddTask() {
-        String input = "01/01/2020";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        todo.addTask("Test!");
+        todo.addTask("Test!", "01/01/2020");
         ArrayList<Task> listOfTask = todo.getTaskList();
 
         for (Task t : listOfTask) {

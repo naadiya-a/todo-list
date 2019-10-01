@@ -16,10 +16,7 @@ public class TestTask {
     // Reference: https://stackoverflow.com/questions/31635698/junit-testing-for-user-input-using-scanner?fbclid=IwAR2UKU7ks6DmG9pQEa2Rm06IH0IzC4GV2qYaH5fPhbceBTQcskkVqGhEsMc
     @BeforeEach
     public void setup() {
-        String input = "01/01/2020";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        testTask = new Task("null");
+        testTask = new Task("null", "12/31/2019");
     }
 
     @Test
