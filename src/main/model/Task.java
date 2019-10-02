@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Task implements Serializable {
+public class Task {
 
     private String taskName;
     private Date dueDate;

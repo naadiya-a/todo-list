@@ -42,9 +42,14 @@ public class UserInput {
             System.out.println("The task has been marked as complete!");
         }
         if (i == 3 || i == 4) {
-            toDoList.load();
             toDoList.save();
+            toDoList.load();
         }
+        //he said don't worry about hitting it more than once and making duplicates
+        //suggested making a separate option for save and a separate option for load
+        //and [my thought] maybe make the last option as just exit instead of showing list
+        //[also me] maybe try the index thing for save so i save the most recent task every time a new one is added
+        //          ^(and put save under option 1)
     }
 
     // EFFECTS: gets name of new task to be created

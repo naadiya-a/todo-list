@@ -34,11 +34,14 @@ public class ToDoListTest {
         todo.addTask("task 1", "10/01/2019");
         todo.addTask("task 2", "11/01/2019");
         todo.save();
-        // !!!
+        //(iterate?) and check that each task is in the file
+        //!!! AND change save method so that it takes a file name as an argument,
+        //      to avoid overwriting my real todoListData file
     }
 
     @Test
     public void testLoad() throws IOException, ClassNotFoundException {
         // !!!
+        //manually create a file check that each part of the string prints what i expect
     }
 }
