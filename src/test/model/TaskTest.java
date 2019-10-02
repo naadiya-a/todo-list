@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestTask {
+public class TaskTest {
 
     private Task testTask;
 

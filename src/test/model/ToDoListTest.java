@@ -5,13 +5,12 @@ import model.ToDoList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestToDoList {
+public class ToDoListTest {
 
     private ToDoList todo;
 
@@ -28,5 +27,18 @@ public class TestToDoList {
         for (Task t : listOfTask) {
             assertEquals("Test!", t.getTaskName());
         }
+    }
+
+    @Test
+    public void testSave() throws IOException {
+        todo.addTask("task 1", "10/01/2019");
+        todo.addTask("task 2", "11/01/2019");
+        todo.save();
+        // !!!
+    }
+
+    @Test
+    public void testLoad() throws IOException, ClassNotFoundException {
+        // !!!
     }
 }

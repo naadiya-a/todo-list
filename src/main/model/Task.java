@@ -1,11 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
-public class Task {
+public class Task implements Serializable {
 
     private String taskName;
     private Date dueDate;

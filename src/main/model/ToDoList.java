@@ -1,10 +1,13 @@
 package model;
 
-import model.Saveable;
-
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
-public class ToDoList {
+public class ToDoList implements Saveable, Loadable {
 
     private ArrayList<Task> taskList;
 
@@ -29,5 +32,23 @@ public class ToDoList {
 
     public ArrayList<Task> getTaskList() {
         return this.taskList;
+    }
+
+    // EFFECTS: writes current to-do list to a text file
+    public void save() throws IOException {
+        PrintWriter writer = new PrintWriter("./data/todoListData.txt","UTF-8");
+        for (Task task : taskList) {
+//            System.out.print("Name: " + task.getTaskName() + " ");
+//            System.out.println("Due Date: " + task.getDueDate() + " ");
+//            System.out.println("Completed status: " + task.getCompleted());
+            writer.println(task);
+        }
+        writer.close();
+    }
+
+    // EFFECTS: reads saved to-do list from text file
+    public void load() throws IOException, ClassNotFoundException {
+        List<String> lines = Files.readAllLines(Paths.get("./data/todoListData.txt"));
+        System.out.println(lines);
     }
 }
