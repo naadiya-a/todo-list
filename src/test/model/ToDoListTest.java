@@ -1,11 +1,13 @@
 package model;
 
-import model.Task;
-import model.ToDoList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,17 +33,21 @@ public class ToDoListTest {
 
     @Test
     public void testSave() throws IOException {
-        todo.addTask("task 1", "10/01/2019");
-        todo.addTask("task 2", "11/01/2019");
-        todo.save();
-        //(iterate?) and check that each task is in the file
-        //!!! AND change save method so that it takes a file name as an argument,
-        //      to avoid overwriting my real todoListData file
+        File file = new File("./data/testSave.txt");
+        // clear the file
+        PrintWriter writer = new PrintWriter(file);
+        writer.print("");
+        writer.close();
+
+        todo.addTask("Test!", "10/03/2019");
+        todo.save(file);
+        ArrayList<String> array = (ArrayList<String>) Files.readAllLines(Paths.get("./data/testSave.txt"));
+        assertEquals(array.get(0),"Test!;Thu Oct 03 00:00:00 PDT 2019;false");
     }
 
     @Test
-    public void testLoad() throws IOException, ClassNotFoundException {
-        // !!!
-        //manually create a file check that each part of the string prints what i expect
+    public void testLoad() throws IOException {
+        ArrayList<String> array = (ArrayList<String>) todo.load("./data/testLoad.txt");
+        assertEquals(array.get(0),"Testing;Thu Oct 03 00:00:00 PDT 2019;false");
     }
 }

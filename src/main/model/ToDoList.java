@@ -35,20 +35,23 @@ public class ToDoList implements Saveable, Loadable {
     }
 
     // EFFECTS: writes current to-do list to a text file
-    public void save() throws IOException {
-        FileWriter fileWriter = new FileWriter("./data/todoListData.txt", true);
+    public void save(File fileName) throws IOException {
+        FileWriter fileWriter = new FileWriter(fileName, true);
         PrintWriter printWriter = new PrintWriter(fileWriter);
-        for (Task task : taskList) {
-            printWriter.println(task.getTaskName() + ";"
-                    + task.getDueDate() + ";"
-                    + task.getCompleted());
-        }
+        Task t = taskList.get(taskList.size() - 1);
+        printWriter.println(t.getTaskName() + ";"
+                + t.getDueDate() + ";"
+                + t.getCompleted());
         printWriter.close();
     }
 
     // EFFECTS: reads saved to-do list from text file
-    public void load() throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get("./data/todoListData.txt"));
+    public List<String> load(String filePath) throws IOException {
+        return (Files.readAllLines(Paths.get(filePath)));
+    }
+
+    public void printLoad(String filePath) throws IOException {
+        List<String> lines = this.load(filePath);
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnSpace(line);
             System.out.print("Name: " + partsOfLine.get(0) + " ");

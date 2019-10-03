@@ -1,11 +1,9 @@
 package ui;
 
-import model.Task;
 import model.ToDoList;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 public class UserInput {
@@ -33,23 +31,19 @@ public class UserInput {
         }
     }
 
-    public void performAction(int i) throws IOException, ClassNotFoundException {
+    public void performAction(int i) throws IOException {
         if (i == 1) {
             toDoList.addTask(inputNewTask(), inputDueDate());
+            toDoList.save(new File("./data/todoListData.txt"));
         }
         if (i == 2) {
             inputCompleteTask();
             System.out.println("The task has been marked as complete!");
         }
         if (i == 3 || i == 4) {
-            toDoList.save();
-            toDoList.load();
+            toDoList.printLoad("./data/todoListData.txt");
         }
-        //he said don't worry about hitting it more than once and making duplicates
-        //suggested making a separate option for save and a separate option for load
-        //and [my thought] maybe make the last option as just exit instead of showing list
-        //[also me] maybe try the index thing for save so i save the most recent task every time a new one is added
-        //          ^(and put save under option 1)
+        // !!! tasks not marking complete! - ALSO probably shouldn't be using taskName !
     }
 
     // EFFECTS: gets name of new task to be created

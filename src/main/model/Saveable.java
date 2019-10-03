@@ -1,9 +1,8 @@
 package model;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 public interface Saveable {
-    void save() throws IOException;
+    void save(File fileName) throws IOException;
 }
