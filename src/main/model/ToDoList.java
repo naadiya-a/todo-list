@@ -22,6 +22,7 @@ public class ToDoList implements Saveable, Loadable {
         taskList.add(newTask);
     }
 
+    // EFFECTS: finds completed task from taskList
     public void completeTask(String completeTaskName) {
         for (Task t : taskList) {
             if (t.getTaskName().equals(completeTaskName)) {
@@ -60,7 +61,8 @@ public class ToDoList implements Saveable, Loadable {
         }
     }
 
-    private static ArrayList<String> splitOnSpace(String line) {
+    // EFFECTS: separates strings at semicolon
+    public static ArrayList<String> splitOnSpace(String line) {
         String[] splits = line.split(";");
         return new ArrayList<>(Arrays.asList(splits));
     }

@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ToDoListTest {
 
@@ -23,12 +23,27 @@ public class ToDoListTest {
 
     @Test
     public void testAddTask() {
-        todo.addTask("Test!", "01/01/2020");
+        todo.addTask("Test 1!", "01/01/2020");
+        todo.addTask("Test 2!", "01/02/2020");
         ArrayList<Task> listOfTask = todo.getTaskList();
+        Task t1 = listOfTask.get(0);
+        Task t2 = listOfTask.get(1);
+        assertEquals(t1.getTaskName(), "Test 1!");
+        assertEquals(t2.getTaskName(), "Test 2!");
+    }
 
-        for (Task t : listOfTask) {
-            assertEquals("Test!", t.getTaskName());
-        }
+    @Test
+    public void testCompleteTask() {
+        todo.addTask("Test 1!", "01/01/2020");
+        todo.addTask("Test 2!", "01/02/2020");
+        todo.completeTask("Test 2!");
+        ArrayList<Task> listOfTask = todo.getTaskList();
+        Task t1 = listOfTask.get(0);
+        Task t2 = listOfTask.get(1);
+        assertEquals(t1.getTaskName(), "Test 1!");
+        assertFalse(t1.getCompleted());
+        assertEquals(t2.getTaskName(), "✓ Test 2!");
+        assertTrue(t2.getCompleted());
     }
 
     @Test
