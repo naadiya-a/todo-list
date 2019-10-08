@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,4 +66,18 @@ public class ToDoListTest {
         ArrayList<String> array = (ArrayList<String>) todo.load("./data/testLoad.txt");
         assertEquals(array.get(0),"Testing;Thu Oct 03 00:00:00 PDT 2019;false");
     }
+
+    @Test
+    public void testSplitOnSpace() {
+        ArrayList<String> array = ToDoList.splitOnSpace("hey;you");
+        ArrayList<String> actual = new ArrayList<>(Arrays.asList("hey", "you"));
+        assertEquals(array, actual);
+    }
+
+//    @Test
+//    public void testPrintLoad() throws IOException {
+//        todo.printLoad("./data/testLoad.txt");
+//        assert((todo.printLoad("./data/testLoad.txt")),
+//                "Name: Testing Due Date: Thu Oct 03 00:00:00 PDT 2019 Completed status: false");
+//    }
 }

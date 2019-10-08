@@ -6,7 +6,7 @@ import java.util.Date;
 
 public abstract class Task {
 
-    private String taskName;
+    protected String taskName;
     private Date dueDate;
     private boolean completed;
 
@@ -18,9 +18,7 @@ public abstract class Task {
 
     // MODIFIES: this
     // EFFECTS: assigns name to the task
-    public void setName(String name) {
-        this.taskName = name;
-    }
+    public abstract void setName(String name);
 
     //    Reference: https://stackoverflow.com/questions/11665195/unhandled-exception-type-parseexception
     // MODIFIES: this

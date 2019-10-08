@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RegularTaskTest {
 
-    private RegularTask testTask;
+    private Task testTask;
 
     // Reference: https://stackoverflow.com/questions/31635698/junit-testing-for-user-input-using-scanner?fbclid=IwAR2UKU7ks6DmG9pQEa2Rm06IH0IzC4GV2qYaH5fPhbceBTQcskkVqGhEsMc
     @BeforeEach
@@ -19,30 +19,8 @@ public class RegularTaskTest {
 
     @Test
     public void testSetName() {
-        String name = "Test!";
+        String name = "Test";
         testTask.setName(name);
-        assertEquals("Test!", testTask.getTaskName());
-    }
-
-    @Test
-    public void testSetDueDate() {
-        String date = "01/02/2020";
-        testTask.setDueDate(date);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        String dueDateAsString = sdf.format(testTask.getDueDate());
-        assertEquals("01/02/2020", dueDateAsString);
-    }
-
-    @Test
-    public void testIsCompletedFalse() {
-        assertFalse(testTask.getCompleted());
-    }
-
-    @Test
-    public void testIsCompletedTrue() {
-        testTask.setName("Test!");
-        testTask.isCompleted();
-        assertTrue(testTask.getCompleted());
-        assertEquals("✓ Test!", testTask.getTaskName());
+        assertEquals("Test", testTask.getTaskName());
     }
 }
