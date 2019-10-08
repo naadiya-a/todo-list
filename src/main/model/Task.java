@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Task {
+public abstract class Task {
 
     private String taskName;
     private Date dueDate;
@@ -22,7 +22,7 @@ public class Task {
         this.taskName = name;
     }
 
-//    Reference: https://stackoverflow.com/questions/11665195/unhandled-exception-type-parseexception
+    //    Reference: https://stackoverflow.com/questions/11665195/unhandled-exception-type-parseexception
     // MODIFIES: this
     // EFFECTS: assigns due date to the task
     public void setDueDate(String date) {

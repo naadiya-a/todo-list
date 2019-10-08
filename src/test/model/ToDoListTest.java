@@ -23,8 +23,8 @@ public class ToDoListTest {
 
     @Test
     public void testAddTask() {
-        todo.addTask("Test 1!", "01/01/2020");
-        todo.addTask("Test 2!", "01/02/2020");
+        todo.addTask("Test 1!", "01/01/2020", "2");
+        todo.addTask("Test 2!", "01/02/2020", "2");
         ArrayList<Task> listOfTask = todo.getTaskList();
         Task t1 = listOfTask.get(0);
         Task t2 = listOfTask.get(1);
@@ -34,8 +34,8 @@ public class ToDoListTest {
 
     @Test
     public void testCompleteTask() {
-        todo.addTask("Test 1!", "01/01/2020");
-        todo.addTask("Test 2!", "01/02/2020");
+        todo.addTask("Test 1!", "01/01/2020", "2");
+        todo.addTask("Test 2!", "01/02/2020", "2");
         todo.completeTask("Test 2!");
         ArrayList<Task> listOfTask = todo.getTaskList();
         Task t1 = listOfTask.get(0);
@@ -54,7 +54,7 @@ public class ToDoListTest {
         writer.print("");
         writer.close();
 
-        todo.addTask("Test!", "10/03/2019");
+        todo.addTask("Test!", "10/03/2019", "2");
         todo.save(file);
         ArrayList<String> array = (ArrayList<String>) Files.readAllLines(Paths.get("./data/testSave.txt"));
         assertEquals(array.get(0),"Test!;Thu Oct 03 00:00:00 PDT 2019;false");

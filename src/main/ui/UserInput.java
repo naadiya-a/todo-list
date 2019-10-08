@@ -33,7 +33,7 @@ public class UserInput {
 
     public void performAction(int i) throws IOException {
         if (i == 1) {
-            toDoList.addTask(inputNewTask(), inputDueDate());
+            toDoList.addTask(inputNewTask(), inputDueDate(), inputUrgent());
             toDoList.save(new File("./data/todoListData.txt"));
         }
         if (i == 2) {
@@ -56,6 +56,11 @@ public class UserInput {
 
     private String inputDueDate() {
         System.out.println("Type in the due date as: MM/DD/YYYY");
+        return scanner.nextLine();
+    }
+
+    private String inputUrgent() {
+        System.out.println("Is this task urgent? Select [1] for yes, [2] for no");
         return scanner.nextLine();
     }
 

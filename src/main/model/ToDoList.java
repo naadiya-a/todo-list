@@ -17,8 +17,13 @@ public class ToDoList implements Saveable, Loadable {
 
     // MODIFIES: taskList
     // EFFECTS: adds new task to taskList
-    public void addTask(String newTaskName, String newDueDate) {
-        Task newTask = new Task(newTaskName, newDueDate);
+    public void addTask(String newTaskName, String newDueDate, String urgent) {
+        Task newTask;
+        if (urgent.equals("2")) {
+            newTask = new RegularTask(newTaskName, newDueDate);
+        } else {
+            newTask = new UrgentTask(newTaskName, newDueDate);
+        }
         taskList.add(newTask);
     }
 
