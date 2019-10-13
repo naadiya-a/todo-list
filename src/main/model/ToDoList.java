@@ -9,6 +9,7 @@ import java.util.List;
 
 public class ToDoList implements Saveable, Loadable {
 
+    public static final int MAX_INCOMPLETE = 30;
     private ArrayList<Task> taskList;
 
     public ToDoList() {
@@ -17,14 +18,18 @@ public class ToDoList implements Saveable, Loadable {
 
     // MODIFIES: taskList
     // EFFECTS: adds new task to taskList
-    public void addTask(String newTaskName, String newDueDate, String urgent) {
+    public void addTask(String newTaskName, String newDueDate, String urgent) throws TooManyThingsToDo {
         Task newTask;
-        if (urgent.equals("2")) {
-            newTask = new RegularTask(newTaskName, newDueDate);
+        if (taskList.size() < MAX_INCOMPLETE) {
+            if (urgent.equals("2")) {
+                newTask = new RegularTask(newTaskName, newDueDate);
+            } else {
+                newTask = new UrgentTask(newTaskName, newDueDate);
+            }
+            taskList.add(newTask);
         } else {
-            newTask = new UrgentTask(newTaskName, newDueDate);
+            throw new TooManyThingsToDo();
         }
-        taskList.add(newTask);
     }
 
     // EFFECTS: finds completed task from taskList
@@ -41,14 +46,19 @@ public class ToDoList implements Saveable, Loadable {
     }
 
     // EFFECTS: writes current to-do list to a text file
-    public void save(File fileName) throws IOException {
-        FileWriter fileWriter = new FileWriter(fileName, true);
-        PrintWriter printWriter = new PrintWriter(fileWriter);
-        Task t = taskList.get(taskList.size() - 1);
-        printWriter.println(t.getTaskName() + ";"
-                + t.getDueDate() + ";"
-                + t.getCompleted());
-        printWriter.close();
+    public void save(File fileName) {
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter(fileName, true);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            Task t = taskList.get(taskList.size() - 1);
+            printWriter.println(t.getTaskName() + ";"
+                    + t.getDueDate() + ";"
+                    + t.getCompleted());
+            printWriter.close();
+        } catch (IOException e) {
+            System.out.println("Cannot save exception");
+        }
     }
 
     // EFFECTS: reads saved to-do list from text file
@@ -56,13 +66,18 @@ public class ToDoList implements Saveable, Loadable {
         return (Files.readAllLines(Paths.get(filePath)));
     }
 
-    public void printLoad(String filePath) throws IOException {
-        List<String> lines = this.load(filePath);
-        for (String line : lines) {
-            ArrayList<String> partsOfLine = splitOnSpace(line);
-            System.out.print("Name: " + partsOfLine.get(0) + " ");
-            System.out.print("Due date: " + partsOfLine.get(1) + " ");
-            System.out.println("Completed status: " + partsOfLine.get(2));
+    public void printLoad(String filePath) {
+        List<String> lines;
+        try {
+            lines = this.load(filePath);
+            for (String line : lines) {
+                ArrayList<String> partsOfLine = splitOnSpace(line);
+                System.out.print("Name: " + partsOfLine.get(0) + " ");
+                System.out.print("Due date: " + partsOfLine.get(1) + " ");
+                System.out.println("Completed status: " + partsOfLine.get(2));
+            }
+        } catch (IOException e) {
+            System.out.println("Cannot load exception");
         }
     }
 

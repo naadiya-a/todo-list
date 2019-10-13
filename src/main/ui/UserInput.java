@@ -1,9 +1,9 @@
 package ui;
 
 import model.ToDoList;
+import model.TooManyThingsToDo;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class UserInput {
@@ -11,14 +11,14 @@ public class UserInput {
     private Scanner scanner;
     private ToDoList toDoList;
 
-    public UserInput() throws IOException, ClassNotFoundException {
+    public UserInput() {
         scanner = new Scanner(System.in);
         toDoList = new ToDoList();
         inputAction();
     }
 
     //    Reference: https://stackoverflow.com/questions/31152539/how-to-make-a-functioning-to-do-list-in-java
-    private void inputAction() throws IOException, ClassNotFoundException {
+    private void inputAction() {
         int action = 0;
         while (action < 4) {
             System.out.println("Would you like to:");
@@ -31,10 +31,16 @@ public class UserInput {
         }
     }
 
-    public void performAction(int i) throws IOException {
+    public void performAction(int i) {
         if (i == 1) {
-            toDoList.addTask(inputNewTask(), inputDueDate(), inputUrgent());
-            toDoList.save(new File("./data/todoListData.txt"));
+            try {
+                toDoList.addTask(inputNewTask(), inputDueDate(), inputUrgent());
+            } catch (TooManyThingsToDo tooManyThingsToDo) {
+                System.out.println("There are too many incomplete tasks in your list.");
+                System.out.println("Please check off any completed tasks.");
+            } finally {
+                toDoList.save(new File("./data/todoListData.txt"));
+            }
         }
         if (i == 2) {
             inputCompleteTask();
@@ -43,7 +49,6 @@ public class UserInput {
         if (i == 3 || i == 4) {
             toDoList.printLoad("./data/todoListData.txt");
         }
-        // !!! tasks not marking complete! - ALSO probably shouldn't be using taskName !
     }
 
     // EFFECTS: gets name of new task to be created
@@ -54,7 +59,7 @@ public class UserInput {
         return scanner.nextLine();
     }
 
-    private String inputDueDate() {
+    public String inputDueDate() {
         System.out.println("Type in the due date as: MM/DD/YYYY");
         return scanner.nextLine();
     }

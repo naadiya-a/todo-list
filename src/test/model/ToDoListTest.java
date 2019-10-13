@@ -23,7 +23,7 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testAddTask() {
+    public void testAddTask() throws TooManyThingsToDo {
         todo.addTask("Test 1!", "01/01/2020", "2");
         todo.addTask("Test 2!", "01/02/2020", "2");
         ArrayList<Task> listOfTask = todo.getTaskList();
@@ -34,7 +34,32 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testCompleteTask() {
+    public void testAddTaskUpperBound() throws TooManyThingsToDo {
+        for (int i = 0; i < ToDoList.MAX_INCOMPLETE - 1; i++) {
+            todo.addTask("Test!", "01/01/2020", "2");
+        }
+        try {
+            todo.addTask("Last one", "12/31/2019", "2");
+        } catch (TooManyThingsToDo e) {
+            fail("I was not expecting TooManyThingsToDo!");
+        }
+    }
+
+    @Test
+    public void testAddTaskThrowException() throws TooManyThingsToDo {
+        for (int i = 0; i < ToDoList.MAX_INCOMPLETE; i++) {
+            todo.addTask("Test!", "01/01/2020", "2");
+        }
+        try {
+            todo.addTask("Too many", "12/31/2019", "2");
+            fail("I was not expecting to reach this line of code!");
+        } catch (TooManyThingsToDo e) {
+            System.out.println("Caught the exception!");
+        }
+    }
+
+    @Test
+    public void testCompleteTask() throws TooManyThingsToDo {
         todo.addTask("Test 1!", "01/01/2020", "2");
         todo.addTask("Test 2!", "01/02/2020", "2");
         todo.completeTask("Test 2!");
@@ -48,7 +73,7 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testSave() throws IOException {
+    public void testSave() throws IOException, TooManyThingsToDo {
         File file = new File("./data/testSave.txt");
         // clear the file
         PrintWriter writer = new PrintWriter(file);
@@ -73,11 +98,4 @@ public class ToDoListTest {
         ArrayList<String> actual = new ArrayList<>(Arrays.asList("hey", "you"));
         assertEquals(array, actual);
     }
-
-//    @Test
-//    public void testPrintLoad() throws IOException {
-//        todo.printLoad("./data/testLoad.txt");
-//        assert((todo.printLoad("./data/testLoad.txt")),
-//                "Name: Testing Due Date: Thu Oct 03 00:00:00 PDT 2019 Completed status: false");
-//    }
 }
