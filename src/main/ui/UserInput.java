@@ -31,7 +31,7 @@ public class UserInput {
         }
     }
 
-    public void performAction(int i) {
+    private void performAction(int i) {
         if (i == 1) {
             try {
                 toDoList.addTask(inputNewTask(), inputDueDate(), inputUrgent());
@@ -53,13 +53,13 @@ public class UserInput {
 
     // EFFECTS: gets name of new task to be created
     //          and returns the name
-    public String inputNewTask() {
+    private String inputNewTask() {
         System.out.println("Type in the task you want to add");
         scanner.nextLine();
         return scanner.nextLine();
     }
 
-    public String inputDueDate() {
+    private String inputDueDate() {
         System.out.println("Type in the due date as: MM/DD/YYYY");
         return scanner.nextLine();
     }
@@ -71,7 +71,7 @@ public class UserInput {
 
     // EFFECTS: gets name of completed task
     //          and returns the name
-    public void inputCompleteTask() {
+    private void inputCompleteTask() {
         System.out.println("Enter the name of the completed task");
         scanner.nextLine();
         String name = scanner.nextLine();
