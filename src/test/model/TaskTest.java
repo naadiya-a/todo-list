@@ -65,4 +65,22 @@ public class TaskTest {
         regTask.removeList();
         assertNull(regTask.getToDoList());
     }
+
+    @Test
+    void testEquals() {
+        Task t1 = new RegularTask("regular", "12/31/2019");
+        assertEquals(t1, regTask);
+    }
+
+    @Test
+    void testNotEqualsName() {
+        Task t1 = new RegularTask("regular1", "12/31/2019");
+        assertNotEquals(t1, regTask);
+    }
+
+    @Test
+    void testNotEqualsClass() {
+        Task t1 = new UrgentTask("regular", "12/31/2019");
+        assertNotEquals(t1, regTask);
+    }
 }
