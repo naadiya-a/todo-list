@@ -20,8 +20,8 @@ public class UserInput {
     //    Reference: https://stackoverflow.com/questions/31152539/how-to-make-a-functioning-to-do-list-in-java
     private void inputAction() {
         int action = 0;
+        toDoList.printLoad("./data/todoListData.txt");
         while (action < 4) {
-            toDoList.printLoad("./data/todoListData.txt");
             System.out.println("Would you like to:");
             System.out.println("[1] Add new task");
             System.out.println("[2] Mark a task as completed");

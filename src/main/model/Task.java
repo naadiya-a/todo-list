@@ -69,7 +69,7 @@ public abstract class Task {
     // EFFECTS: sets the toDoList as this task's list and adds itself to the toDoList
     public void addList(ToDoList toDoList) {
         this.toDoList = toDoList;
-        toDoList.addToMap(this.taskName, this);
+        toDoList.addToMap(this);
     }
 
     // MODIFIES: this

@@ -18,6 +18,6 @@ public class UrgentTaskTest {
     public void testSetName() {
         String name = "Test";
         testTask.setName(name);
-        assertEquals("! Test", testTask.getTaskName());
+        assertEquals("Test", testTask.getTaskName());
     }
 }

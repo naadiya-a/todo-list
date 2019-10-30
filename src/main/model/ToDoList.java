@@ -27,7 +27,7 @@ public class ToDoList implements Saveable, Loadable {
             } else {
                 newTask = new UrgentTask(newTaskName, newDueDate);
             }
-            addToMap(newTaskName, newTask);
+            addToMap(newTask);
         } else {
             throw new TooManyThingsToDo();
         }
@@ -36,9 +36,9 @@ public class ToDoList implements Saveable, Loadable {
     // MODIFIES: this
     // EFFECTS: if task is not already in the list,
     //          adds the task to the list and sets itself as the task's list
-    public void addToMap(String taskName, Task task) {
-        if (!taskMap.containsKey(taskName)) {
-            taskMap.put(taskName, task);
+    public void addToMap(Task task) {
+        if (!taskMap.containsKey(task.getTaskName())) {
+            taskMap.put(task.getTaskName(), task);
             task.addList(this);
         }
     }
@@ -70,11 +70,11 @@ public class ToDoList implements Saveable, Loadable {
         try {
             fileWriter = new FileWriter(fileName, true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
-            Task t = taskList.get(taskList.size() - 1);
-            printWriter.println(t.getTaskName() + ";"
-                    + t.getDueDate() + ";"
-                    + t.getCompleted() + ";"
-                    + t.getClass());
+            for (Task t : taskMap.values()) {
+                printWriter.println(t.getTaskName() + ";"
+                        + t.getDueDate() + ";"
+                        + t.getCompleted());
+            }
             printWriter.close();
         } catch (IOException e) {
             System.out.println("Cannot save exception");
@@ -95,7 +95,6 @@ public class ToDoList implements Saveable, Loadable {
                 System.out.print("Name: " + partsOfLine.get(0) + " ");
                 System.out.print("Due date: " + partsOfLine.get(1) + " ");
                 System.out.println("Completed status: " + partsOfLine.get(2));
-//                addTask(partsOfLine.get(0), partsOfLine.get(1), partsOfLine.get(3));
             }
         } catch (IOException e) {
             System.out.println("Cannot load exception");
@@ -108,7 +107,23 @@ public class ToDoList implements Saveable, Loadable {
         return new ArrayList<>(Arrays.asList(splits));
     }
 
+    // EFFECTS: prints the name, due date, and completed status of each task in the list
     public void printCollection() {
-        this.taskMap.values();
+        if (!this.getTaskMap().isEmpty()) {
+            ArrayList<Task> taskList = convertToArray();
+            for (Task t : taskList) {
+                System.out.print("Name: " + t.getTaskName() + " ");
+                System.out.print("Due date: " + t.getDueDate() + " ");
+                System.out.println("Completed status: " + t.getCompleted());
+            }
+        } else {
+            System.out.println("Your list is empty.");
+        }
+    }
+
+    // EFFECTS: converts taskMap values collection into ArrayList
+    public ArrayList<Task> convertToArray() {
+        Collection<Task> tasks = this.taskMap.values();
+        return new ArrayList<>(tasks);
     }
 }

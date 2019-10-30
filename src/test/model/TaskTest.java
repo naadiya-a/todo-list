@@ -30,13 +30,12 @@ public class TaskTest {
         assertFalse(regTask.getCompleted());
     }
 
-//    @Test
-//    void testIsCompletedTrue() {
-//        regTask.setName("Test!");
-//        regTask.isCompleted();
-//        assertTrue(regTask.getCompleted());
-//        assertEquals("✓ Test!", regTask.getTaskName());
-//    }
+    @Test
+    void testIsCompletedTrue() {
+        regTask.setName("Test!");
+        regTask.isCompleted();
+        assertTrue(regTask.getCompleted());
+    }
 
     @Test
     void testAddList() {
@@ -67,9 +66,14 @@ public class TaskTest {
     }
 
     @Test
-    void testEquals() {
+    void testEqualsTwoOfAKind() {
         Task t1 = new RegularTask("regular", "12/31/2019");
         assertEquals(t1, regTask);
+    }
+
+    @Test
+    void testEqualsSameObject() {
+        assertEquals(regTask, regTask);
     }
 
     @Test

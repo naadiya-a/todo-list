@@ -40,7 +40,7 @@ public class ToDoListTest {
         Task t1 = new UrgentTask("Test 1", "01/01/2020");
         HashMap<String,Task> mapOfTask = todo.getTaskMap();
         Collection<Task> values = todo.getTaskMap().values();
-        assertTrue(mapOfTask.containsKey("Test 1"));
+        assertTrue(mapOfTask.containsKey("! Test 1"));
         assertTrue(values.contains(t1));
     }
 
@@ -82,19 +82,19 @@ public class ToDoListTest {
         assertTrue(t2.getCompleted());
     }
 
-//    @Test
-//    void testSave() throws IOException, TooManyThingsToDo {
-//        File file = new File("./data/testSave.txt");
-//        // clear the file
-//        PrintWriter writer = new PrintWriter(file);
-//        writer.print("");
-//        writer.close();
-//
-//        todo.addTask("Test!", "10/03/2019", "2");
-//        todo.save(file);
-//        ArrayList<String> array = (ArrayList<String>) Files.readAllLines(Paths.get("./data/testSave.txt"));
-//        assertEquals(array.get(0),"Test!;Thu Oct 03 00:00:00 PDT 2019;false");
-//    }
+    @Test
+    void testSave() throws IOException, TooManyThingsToDo {
+        File file = new File("./data/testSave.txt");
+        // clear the file
+        PrintWriter writer = new PrintWriter(file);
+        writer.print("");
+        writer.close();
+
+        todo.addTask("Test!", "10/03/2019", "2");
+        todo.save(file);
+        ArrayList<String> array = (ArrayList<String>) Files.readAllLines(Paths.get("./data/testSave.txt"));
+        assertEquals(array.get(0),"Test!;Thu Oct 03 00:00:00 PDT 2019;false");
+    }
 
     @Test
     void testLoad() throws IOException {
@@ -114,7 +114,7 @@ public class ToDoListTest {
         Task t1 = new RegularTask("Test","10/29/2019");
         assertFalse(todo.getTaskMap().containsKey("Test"));
         assertEquals(0, todo.getTaskMap().size());
-        todo.addToMap("Test", t1);
+        todo.addToMap(t1);
         assertTrue(todo.getTaskMap().containsKey("Test"));
         assertEquals(1, todo.getTaskMap().size());
     }
@@ -124,10 +124,10 @@ public class ToDoListTest {
         Task t1 = new RegularTask("Test","10/29/2019");
         assertFalse(todo.getTaskMap().containsKey(t1));
         assertEquals(0, todo.getTaskMap().size());
-        todo.addToMap("Test", t1);
+        todo.addToMap(t1);
         assertTrue(todo.getTaskMap().containsKey("Test"));
         assertEquals(1, todo.getTaskMap().size());
-        todo.addToMap("Test", t1);
+        todo.addToMap(t1);
         assertTrue(todo.getTaskMap().containsKey("Test"));
         assertEquals(1, todo.getTaskMap().size());
     }
@@ -135,7 +135,7 @@ public class ToDoListTest {
     @Test
     void testRemoveFromList() {
         Task t1 = new RegularTask("Test","10/29/2019");
-        todo.addToMap("Test", t1);
+        todo.getTaskMap().put(t1.getTaskName(), t1);
         assertTrue(todo.getTaskMap().containsKey("Test"));
         todo.removeFromMap("Test");
         assertFalse(todo.getTaskMap().containsKey("Test"));
@@ -146,5 +146,14 @@ public class ToDoListTest {
         assertFalse(todo.getTaskMap().containsKey("Test"));
         todo.removeFromMap("Test");
         assertFalse(todo.getTaskMap().containsKey("Test"));
+    }
+
+    @Test
+    void testConvertToArray() {
+        Task t1 = new RegularTask("Test","10/29/2019");
+        todo.getTaskMap().put(t1.getTaskName(), t1);
+        ArrayList<Task> tasks = new ArrayList<>();
+        tasks.add(t1);
+        assertEquals(tasks, todo.convertToArray());
     }
 }
