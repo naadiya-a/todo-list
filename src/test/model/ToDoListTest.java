@@ -18,12 +18,12 @@ public class ToDoListTest {
     private ToDoList todo;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         todo = new ToDoList();
     }
 
     @Test
-    public void testAddTask() throws TooManyThingsToDo {
+    void testAddTaskRegular() throws TooManyThingsToDo {
         todo.addTask("Test 1!", "01/01/2020", "2");
         todo.addTask("Test 2!", "01/02/2020", "2");
         ArrayList<Task> listOfTask = todo.getTaskList();
@@ -34,7 +34,14 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testAddTaskUpperBound() throws TooManyThingsToDo {
+    void testAddTaskUrgent() throws TooManyThingsToDo {
+        todo.addTask("Test 1", "01/01/2020", "1");
+        Task t1 = todo.getTaskList().get(0);
+        assertEquals(t1.getTaskName(), "! Test 1");
+    }
+
+    @Test
+    void testAddTaskUpperBound() throws TooManyThingsToDo {
         for (int i = 0; i < ToDoList.MAX_INCOMPLETE - 1; i++) {
             todo.addTask("Test!", "01/01/2020", "2");
         }
@@ -46,9 +53,10 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testAddTaskThrowException() throws TooManyThingsToDo {
+    void testAddTaskThrowException() throws TooManyThingsToDo {
         for (int i = 0; i < ToDoList.MAX_INCOMPLETE; i++) {
-            todo.addTask("Test!", "01/01/2020", "2");
+            String name = ("Test" + i);
+            todo.addTask(name, "01/01/2020", "2");
         }
         try {
             todo.addTask("Too many", "12/31/2019", "2");
@@ -59,7 +67,7 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testCompleteTask() throws TooManyThingsToDo {
+    void testCompleteTask() throws TooManyThingsToDo {
         todo.addTask("Test 1!", "01/01/2020", "2");
         todo.addTask("Test 2!", "01/02/2020", "2");
         todo.completeTask("Test 2!");
@@ -73,7 +81,7 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testSave() throws IOException, TooManyThingsToDo {
+    void testSave() throws IOException, TooManyThingsToDo {
         File file = new File("./data/testSave.txt");
         // clear the file
         PrintWriter writer = new PrintWriter(file);
@@ -87,15 +95,55 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testLoad() throws IOException {
+    void testLoad() throws IOException {
         ArrayList<String> array = (ArrayList<String>) todo.load("./data/testLoad.txt");
         assertEquals(array.get(0),"Testing;Thu Oct 03 00:00:00 PDT 2019;false");
     }
 
     @Test
-    public void testSplitOnSpace() {
+    void testSplitOnSpace() {
         ArrayList<String> array = ToDoList.splitOnSpace("hey;you");
         ArrayList<String> actual = new ArrayList<>(Arrays.asList("hey", "you"));
         assertEquals(array, actual);
+    }
+
+    @Test
+    public void testAddToList() {
+        Task t1 = new RegularTask("Test","10/29/2019");
+        assertFalse(todo.getTaskList().contains(t1));
+        assertEquals(0, todo.getTaskList().size());
+        todo.addToList(t1);
+        assertTrue(todo.getTaskList().contains(t1));
+        assertEquals(1, todo.getTaskList().size());
+    }
+
+    @Test
+    void testAddToListAlreadyThere() {
+        Task t1 = new RegularTask("Test","10/29/2019");
+        assertFalse(todo.getTaskList().contains(t1));
+        assertEquals(0, todo.getTaskList().size());
+        todo.addToList(t1);
+        assertTrue(todo.getTaskList().contains(t1));
+        assertEquals(1, todo.getTaskList().size());
+        todo.addToList(t1);
+        assertTrue(todo.getTaskList().contains(t1));
+        assertEquals(1, todo.getTaskList().size());
+    }
+
+    @Test
+    void testRemoveFromList() {
+        Task t1 = new RegularTask("Test","10/29/2019");
+        todo.addToList(t1);
+        assertTrue(todo.getTaskList().contains(t1));
+        todo.removeFromList(t1);
+        assertFalse(todo.getTaskList().contains(t1));
+    }
+
+    @Test
+    void testRemoveFromListNotThere() {
+        Task t1 = new RegularTask("Test","10/29/2019");
+        assertFalse(todo.getTaskList().contains(t1));
+        todo.removeFromList(t1);
+        assertFalse(todo.getTaskList().contains(t1));
     }
 }

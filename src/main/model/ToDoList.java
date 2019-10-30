@@ -26,9 +26,29 @@ public class ToDoList implements Saveable, Loadable {
             } else {
                 newTask = new UrgentTask(newTaskName, newDueDate);
             }
-            taskList.add(newTask);
+            addToList(newTask);
         } else {
             throw new TooManyThingsToDo();
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: if task is not already in the list,
+    //          adds the task to the list and sets itself as the task's list
+    public void addToList(Task task) {
+        if (!taskList.contains(task)) {
+            taskList.add(task);
+            task.addList(this);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: if task is in the list,
+    //          removes the task from the list and removes itself as the task's list
+    public void removeFromList(Task task) {
+        if (taskList.contains(task)) {
+            taskList.remove(task);
+            task.removeList();
         }
     }
 

@@ -3,6 +3,7 @@ package model;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Scanner;
 
 public abstract class Task {
@@ -10,6 +11,26 @@ public abstract class Task {
     protected String taskName;
     private Date dueDate;
     private boolean completed;
+    private ToDoList toDoList;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Task task = (Task) o;
+        return completed == task.completed
+                && Objects.equals(taskName, task.taskName)
+                && Objects.equals(dueDate, task.dueDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(taskName, dueDate, completed);
+    }
 
     public Task(String name, String dueDate) {
         setName(name);
@@ -64,6 +85,23 @@ public abstract class Task {
         this.completed = true;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the toDoList as this task's list and adds itself to the toDoList
+    public void addList(ToDoList toDoList) {
+        this.toDoList = toDoList;
+        toDoList.addToList(this);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets this task's list to null and removes itself from the toDoList
+    public void removeList() {
+        if (toDoList != null) {
+            toDoList.removeFromList(this);
+        }
+        this.toDoList = null;
+    }
+
+
     public String getTaskName() {
         return this.taskName;
     }
@@ -74,5 +112,9 @@ public abstract class Task {
 
     public boolean getCompleted() {
         return this.completed;
+    }
+
+    public ToDoList getToDoList() {
+        return this.toDoList;
     }
 }
