@@ -30,13 +30,13 @@ public class TaskTest {
         assertFalse(regTask.getCompleted());
     }
 
-    @Test
-    void testIsCompletedTrue() {
-        regTask.setName("Test!");
-        regTask.isCompleted();
-        assertTrue(regTask.getCompleted());
-        assertEquals("✓ Test!", regTask.getTaskName());
-    }
+//    @Test
+//    void testIsCompletedTrue() {
+//        regTask.setName("Test!");
+//        regTask.isCompleted();
+//        assertTrue(regTask.getCompleted());
+//        assertEquals("✓ Test!", regTask.getTaskName());
+//    }
 
     @Test
     void testAddList() {

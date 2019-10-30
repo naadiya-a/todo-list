@@ -21,6 +21,7 @@ public class UserInput {
     private void inputAction() {
         int action = 0;
         while (action < 4) {
+            toDoList.printLoad("./data/todoListData.txt");
             System.out.println("Would you like to:");
             System.out.println("[1] Add new task");
             System.out.println("[2] Mark a task as completed");
@@ -38,16 +39,17 @@ public class UserInput {
             } catch (TooManyThingsToDo tooManyThingsToDo) {
                 System.out.println("There are too many incomplete tasks in your list.");
                 System.out.println("Please check off any completed tasks.");
-            } finally {
-                toDoList.save(new File("./data/todoListData.txt"));
             }
         }
         if (i == 2) {
             inputCompleteTask();
             System.out.println("The task has been marked as complete!");
         }
-        if (i == 3 || i == 4) {
-            toDoList.printLoad("./data/todoListData.txt");
+        if (i == 3) {
+            toDoList.printCollection();
+        }
+        if (i == 4) {
+            toDoList.save(new File("./data/todoListData.txt"));
         }
     }
 

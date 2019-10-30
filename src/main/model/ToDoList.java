@@ -3,30 +3,31 @@ package model;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ToDoList implements Saveable, Loadable {
 
     public static final int MAX_INCOMPLETE = 30;
-    private ArrayList<Task> taskList;
+//    private ArrayList<Task> taskList;
+
+    public HashMap<String, Task> taskMap;
 
     public ToDoList() {
-        taskList = new ArrayList<>();
+//        taskList = new ArrayList<>();
+        taskMap = new HashMap<>();
     }
 
     // MODIFIES: taskList
     // EFFECTS: adds new task to taskList
     public void addTask(String newTaskName, String newDueDate, String urgent) throws TooManyThingsToDo {
         Task newTask;
-        if (taskList.size() < MAX_INCOMPLETE) {
+        if (taskMap.size() < MAX_INCOMPLETE) {
             if (urgent.equals("2")) {
                 newTask = new RegularTask(newTaskName, newDueDate);
             } else {
                 newTask = new UrgentTask(newTaskName, newDueDate);
             }
-            addToList(newTask);
+            addToMap(newTaskName, newTask);
         } else {
             throw new TooManyThingsToDo();
         }
@@ -35,9 +36,9 @@ public class ToDoList implements Saveable, Loadable {
     // MODIFIES: this
     // EFFECTS: if task is not already in the list,
     //          adds the task to the list and sets itself as the task's list
-    public void addToList(Task task) {
-        if (!taskList.contains(task)) {
-            taskList.add(task);
+    public void addToMap(String taskName, Task task) {
+        if (!taskMap.containsKey(taskName)) {
+            taskMap.put(taskName, task);
             task.addList(this);
         }
     }
@@ -45,24 +46,22 @@ public class ToDoList implements Saveable, Loadable {
     // MODIFIES: this
     // EFFECTS: if task is in the list,
     //          removes the task from the list and removes itself as the task's list
-    public void removeFromList(Task task) {
-        if (taskList.contains(task)) {
-            taskList.remove(task);
-            task.removeList();
+    public void removeFromMap(String taskName) {
+        if (taskMap.containsKey(taskName)) {
+            Task t = taskMap.get(taskName);
+            taskMap.remove(taskName);
+            t.removeList();
         }
     }
 
     // EFFECTS: finds completed task from taskList
     public void completeTask(String completeTaskName) {
-        for (Task t : taskList) {
-            if (t.getTaskName().equals(completeTaskName)) {
-                t.isCompleted();
-            }
-        }
+        Task t = taskMap.get(completeTaskName);
+        t.isCompleted();
     }
 
-    public ArrayList<Task> getTaskList() {
-        return this.taskList;
+    public HashMap<String, Task> getTaskMap() {
+        return this.taskMap;
     }
 
     // EFFECTS: writes current to-do list to a text file
@@ -74,7 +73,8 @@ public class ToDoList implements Saveable, Loadable {
             Task t = taskList.get(taskList.size() - 1);
             printWriter.println(t.getTaskName() + ";"
                     + t.getDueDate() + ";"
-                    + t.getCompleted());
+                    + t.getCompleted() + ";"
+                    + t.getClass());
             printWriter.close();
         } catch (IOException e) {
             System.out.println("Cannot save exception");
@@ -95,6 +95,7 @@ public class ToDoList implements Saveable, Loadable {
                 System.out.print("Name: " + partsOfLine.get(0) + " ");
                 System.out.print("Due date: " + partsOfLine.get(1) + " ");
                 System.out.println("Completed status: " + partsOfLine.get(2));
+//                addTask(partsOfLine.get(0), partsOfLine.get(1), partsOfLine.get(3));
             }
         } catch (IOException e) {
             System.out.println("Cannot load exception");
@@ -105,5 +106,9 @@ public class ToDoList implements Saveable, Loadable {
     public static ArrayList<String> splitOnSpace(String line) {
         String[] splits = line.split(";");
         return new ArrayList<>(Arrays.asList(splits));
+    }
+
+    public void printCollection() {
+        this.taskMap.values();
     }
 }

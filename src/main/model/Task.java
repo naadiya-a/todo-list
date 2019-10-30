@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-import java.util.Scanner;
 
 public abstract class Task {
 
@@ -12,25 +11,6 @@ public abstract class Task {
     private Date dueDate;
     private boolean completed;
     private ToDoList toDoList;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Task task = (Task) o;
-        return completed == task.completed
-                && Objects.equals(taskName, task.taskName)
-                && Objects.equals(dueDate, task.dueDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(taskName, dueDate, completed);
-    }
 
     public Task(String name, String dueDate) {
         setName(name);
@@ -81,7 +61,7 @@ public abstract class Task {
     // EFFECTS: changes completed status to true
     //          and adds check mark to its name
     public void isCompleted() {
-        this.setName("✓ " + this.taskName);
+//        this.setName("✓ " + this.taskName);
         this.completed = true;
     }
 
@@ -89,18 +69,36 @@ public abstract class Task {
     // EFFECTS: sets the toDoList as this task's list and adds itself to the toDoList
     public void addList(ToDoList toDoList) {
         this.toDoList = toDoList;
-        toDoList.addToList(this);
+        toDoList.addToMap(this.taskName, this);
     }
 
     // MODIFIES: this
     // EFFECTS: sets this task's list to null and removes itself from the toDoList
     public void removeList() {
         if (toDoList != null) {
-            toDoList.removeFromList(this);
+            toDoList.removeFromMap(this.taskName);
         }
         this.toDoList = null;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Task task = (Task) o;
+        return completed == task.completed
+                && Objects.equals(taskName, task.taskName)
+                && Objects.equals(dueDate, task.dueDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(taskName, dueDate, completed);
+    }
 
     public String getTaskName() {
         return this.taskName;
