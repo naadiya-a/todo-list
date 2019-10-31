@@ -87,10 +87,8 @@ public class ToDoList implements Saveable, Loadable {
     }
 
     public void printLoad(String filePath) {
-        List<String> lines;
         try {
-            lines = this.load(filePath);
-            for (String line : lines) {
+            for (String line : this.load(filePath)) {
                 ArrayList<String> partsOfLine = splitOnSpace(line);
                 System.out.print("Name: " + partsOfLine.get(0) + " ");
                 System.out.print("Due date: " + partsOfLine.get(1) + " ");
@@ -107,23 +105,49 @@ public class ToDoList implements Saveable, Loadable {
         return new ArrayList<>(Arrays.asList(splits));
     }
 
+//    // EFFECTS: prints the name, due date, and completed status of each task in the list
+//    public void printCollection() {
+//        if (!this.getTaskMap().isEmpty()) {
+//            ArrayList<Task> taskList = convertToArray();
+//            for (Task t : taskList) {
+//                System.out.print("Name: " + t.getTaskName() + " ");
+//                System.out.print("Due date: " + t.getDueDate() + " ");
+//                System.out.println("Completed status: " + t.getCompleted());
+//            }
+//        } else {
+//            System.out.println("Your list is empty.");
+//        }
+//    }
+//
+//    // Reference: https://stackoverflow.com/questions/1968068/java-how-to-convert-type-collection-into-arraylist
+//    // EFFECTS: converts taskMap values collection into ArrayList
+//    public ArrayList<Task> convertToArray() {
+//        Collection<Task> tasks = this.taskMap.values();
+//        return new ArrayList<>(tasks);
+//    }
+
     // EFFECTS: prints the name, due date, and completed status of each task in the list
     public void printCollection() {
-        if (!this.getTaskMap().isEmpty()) {
-            ArrayList<Task> taskList = convertToArray();
-            for (Task t : taskList) {
-                System.out.print("Name: " + t.getTaskName() + " ");
-                System.out.print("Due date: " + t.getDueDate() + " ");
-                System.out.println("Completed status: " + t.getCompleted());
-            }
-        } else {
+        try {
+            Task t = convertToArray();
+            System.out.print("Name: " + t.getTaskName() + " ");
+            System.out.print("Due date: " + t.getDueDate() + " ");
+            System.out.println("Completed status: " + t.getCompleted());
+        } catch (NullPointerException e) {
             System.out.println("Your list is empty.");
         }
     }
 
+    // Reference: https://stackoverflow.com/questions/1968068/java-how-to-convert-type-collection-into-arraylist
     // EFFECTS: converts taskMap values collection into ArrayList
-    public ArrayList<Task> convertToArray() {
-        Collection<Task> tasks = this.taskMap.values();
-        return new ArrayList<>(tasks);
+    public Task convertToArray() {
+        if (!this.getTaskMap().isEmpty()) {
+            Collection<Task> tasks = this.taskMap.values();
+            ArrayList<Task> taskList = new ArrayList<>(tasks);
+            for (Task t : taskList) {
+                return t;
+            }
+        }
+        return null;
     }
 }

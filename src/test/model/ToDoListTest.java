@@ -40,7 +40,7 @@ public class ToDoListTest {
         Task t1 = new UrgentTask("Test 1", "01/01/2020");
         HashMap<String,Task> mapOfTask = todo.getTaskMap();
         Collection<Task> values = todo.getTaskMap().values();
-        assertTrue(mapOfTask.containsKey("! Test 1"));
+        assertTrue(mapOfTask.containsKey("Test 1"));
         assertTrue(values.contains(t1));
     }
 
@@ -152,8 +152,11 @@ public class ToDoListTest {
     void testConvertToArray() {
         Task t1 = new RegularTask("Test","10/29/2019");
         todo.getTaskMap().put(t1.getTaskName(), t1);
-        ArrayList<Task> tasks = new ArrayList<>();
-        tasks.add(t1);
-        assertEquals(tasks, todo.convertToArray());
+        assertEquals(t1, todo.convertToArray());
+    }
+
+    @Test
+    void testConvertToArrayNull() {
+        assertNull(todo.convertToArray());
     }
 }
