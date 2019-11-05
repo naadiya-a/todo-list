@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -82,6 +83,33 @@ public class ToDoListTest {
         assertTrue(t2.getCompleted());
     }
 
+//    @Test
+//    void testSave() throws IOException, TooManyThingsToDo {
+//        File file = new File("./data/testSave.txt");
+//        // clear the file
+//        PrintWriter writer = new PrintWriter(file);
+//        writer.print("");
+//        writer.close();
+//
+//        todo.addTask("Test!", "10/03/2019", "2");
+//        todo.save(file);
+//        ArrayList<String> array = (ArrayList<String>) Files.readAllLines(Paths.get("./data/testSave.txt"));
+//        assertEquals(array.get(0),"Test!;Thu Oct 03 00:00:00 PDT 2019;false");
+//    }
+//
+//    @Test
+//    void testLoad() throws IOException {
+//        ArrayList<String> array = (ArrayList<String>) todo.load("./data/testLoad.txt");
+//        assertEquals(array.get(0),"Testing;Thu Oct 03 00:00:00 PDT 2019;false");
+//    }
+//
+//    @Test
+//    void testSplitOnSpace() {
+//        ArrayList<String> array = ToDoList.splitOnSpace("hey;you");
+//        ArrayList<String> actual = new ArrayList<>(Arrays.asList("hey", "you"));
+//        assertEquals(array, actual);
+//    }
+
     @Test
     void testSave() throws IOException, TooManyThingsToDo {
         File file = new File("./data/testSave.txt");
@@ -97,20 +125,7 @@ public class ToDoListTest {
     }
 
     @Test
-    void testLoad() throws IOException {
-        ArrayList<String> array = (ArrayList<String>) todo.load("./data/testLoad.txt");
-        assertEquals(array.get(0),"Testing;Thu Oct 03 00:00:00 PDT 2019;false");
-    }
-
-    @Test
-    void testSplitOnSpace() {
-        ArrayList<String> array = ToDoList.splitOnSpace("hey;you");
-        ArrayList<String> actual = new ArrayList<>(Arrays.asList("hey", "you"));
-        assertEquals(array, actual);
-    }
-
-    @Test
-    public void testAddToMap() {
+    void testAddToMap() {
         Task t1 = new RegularTask("Test","10/29/2019");
         assertFalse(todo.getTaskMap().containsKey("Test"));
         assertEquals(0, todo.getTaskMap().size());

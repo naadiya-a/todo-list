@@ -5,11 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class ToDoList implements Saveable, Loadable {
+public class ToDoList {
 
     public static final int MAX_INCOMPLETE = 30;
 
     public HashMap<String, Task> taskMap;
+    private Save save = new Save();
 
     public ToDoList() {
         taskMap = new HashMap<>();
@@ -58,49 +59,13 @@ public class ToDoList implements Saveable, Loadable {
         t.isCompleted();
     }
 
-    public HashMap<String, Task> getTaskMap() {
-        return this.taskMap;
-    }
-
-    // EFFECTS: writes current to-do list to a text file
-    public void save(File fileName) {
-        FileWriter fileWriter;
-        try {
-            fileWriter = new FileWriter(fileName, true);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-            for (Task t : taskMap.values()) {
-                printWriter.println(t.getTaskName() + ";"
-                        + t.getDueDate() + ";"
-                        + t.getCompleted());
-            }
-            printWriter.close();
-        } catch (IOException e) {
-            System.out.println("Cannot save exception");
+    public void save(File filename) {
+        for (Task t : taskMap.values()) {
+            String taskString = (t.getTaskName() + ";"
+                    + t.getDueDate() + ";"
+                    + t.getCompleted());
+            save.save(filename, taskString);
         }
-    }
-
-    // EFFECTS: reads saved to-do list from text file
-    public List<String> load(String filePath) throws IOException {
-        return (Files.readAllLines(Paths.get(filePath)));
-    }
-
-    public void printLoad(String filePath) {
-        try {
-            for (String line : this.load(filePath)) {
-                ArrayList<String> partsOfLine = splitOnSpace(line);
-                System.out.print("Name: " + partsOfLine.get(0) + " ");
-                System.out.print("Due date: " + partsOfLine.get(1) + " ");
-                System.out.println("Completed status: " + partsOfLine.get(2));
-            }
-        } catch (IOException e) {
-            System.out.println("Cannot load exception");
-        }
-    }
-
-    // EFFECTS: separates strings at semicolon
-    public static ArrayList<String> splitOnSpace(String line) {
-        String[] splits = line.split(";");
-        return new ArrayList<>(Arrays.asList(splits));
     }
 
     // EFFECTS: prints the name, due date, and completed status of each task in the list
@@ -118,8 +83,8 @@ public class ToDoList implements Saveable, Loadable {
     // Reference: https://stackoverflow.com/questions/1968068/java-how-to-convert-type-collection-into-arraylist
     // EFFECTS: converts taskMap values collection into ArrayList
     public Task convertToArray() {
-        if (!this.getTaskMap().isEmpty()) {
-            Collection<Task> tasks = this.taskMap.values();
+        if (!taskMap.isEmpty()) {
+            Collection<Task> tasks = taskMap.values();
             ArrayList<Task> taskList = new ArrayList<>(tasks);
             for (Task t : taskList) {
                 return t;
@@ -127,4 +92,34 @@ public class ToDoList implements Saveable, Loadable {
         }
         return null;
     }
+
+    public HashMap<String, Task> getTaskMap() {
+        return this.taskMap;
+    }
+
+    //    // EFFECTS: reads saved to-do list from text file
+//    public List<String> load(String filePath) throws IOException {
+//        return (Files.readAllLines(Paths.get(filePath)));
+//    }
+//
+//    // EFFECTS: separates strings at semicolon
+//    public static ArrayList<String> splitOnSpace(String line) {
+//        String[] splits = line.split(";");
+//        return new ArrayList<>(Arrays.asList(splits));
+//    }
+//
+//    public void printLoad(String filePath) {
+//        try {
+//            for (String line : this.load(filePath)) {
+//                ArrayList<String> partsOfLine = splitOnSpace(line);
+//                System.out.print("Name: " + partsOfLine.get(0) + " ");
+//                System.out.print("Due date: " + partsOfLine.get(1) + " ");
+//                System.out.println("Completed status: " + partsOfLine.get(2));
+//
+////                loadInTaskMap(partsOfLine);
+//            }
+//        } catch (IOException e) {
+//            System.out.println("Cannot load exception");
+//        }
+//    }
 }

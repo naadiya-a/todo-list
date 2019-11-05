@@ -1,5 +1,7 @@
 package ui;
 
+import model.Load;
+import model.Save;
 import model.ToDoList;
 import model.TooManyThingsToDo;
 
@@ -10,6 +12,8 @@ public class UserInput {
 
     private Scanner scanner;
     private ToDoList toDoList;
+    private Load load = new Load();
+//    private Save save;
 
     public UserInput() {
         scanner = new Scanner(System.in);
@@ -20,7 +24,8 @@ public class UserInput {
     //    Reference: https://stackoverflow.com/questions/31152539/how-to-make-a-functioning-to-do-list-in-java
     private void inputAction() {
         int action = 0;
-        toDoList.printLoad("./data/todoListData.txt");
+//        toDoList.printLoad("./data/todoListData.txt");
+        load.printLoad("./data/todoListData.txt");
         while (action < 4) {
             System.out.println("Would you like to:");
             System.out.println("[1] Add new task");
