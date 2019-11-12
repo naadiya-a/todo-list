@@ -27,20 +27,32 @@ public class ToDoListTest {
     void testAddTaskRegular() throws TooManyThingsToDo {
         todo.addTask("Test 1", "01/01/2020", "2");
         Task t1 = new RegularTask("Test 1", "01/01/2020");
-        HashMap<String,Task> mapOfTask = todo.getTaskMap();
-        Collection<Task> values = todo.getTaskMap().values();
-        assertTrue(mapOfTask.containsKey("Test 1"));
-        assertTrue(values.contains(t1));
+
+        HashMap<String,Task> mapOfAllTask = todo.getAllTaskMap();
+        Collection<Task> allValues = todo.getAllTaskMap().values();
+        assertTrue(mapOfAllTask.containsKey("Test 1"));
+        assertTrue(allValues.contains(t1));
+
+        HashMap<String,Task> mapOfIncTask = todo.getIncompleteTaskMap();
+        Collection<Task> incompleteValues = todo.getIncompleteTaskMap().values();
+        assertTrue(mapOfIncTask.containsKey("Test 1"));
+        assertTrue(incompleteValues.contains(t1));
     }
 
     @Test
     void testAddTaskUrgent() throws TooManyThingsToDo {
         todo.addTask("Test 1", "01/01/2020", "1");
         Task t1 = new UrgentTask("Test 1", "01/01/2020");
-        HashMap<String,Task> mapOfTask = todo.getTaskMap();
-        Collection<Task> values = todo.getTaskMap().values();
-        assertTrue(mapOfTask.containsKey("Test 1"));
-        assertTrue(values.contains(t1));
+
+        HashMap<String,Task> mapOfAllTask = todo.getAllTaskMap();
+        Collection<Task> allValues = todo.getAllTaskMap().values();
+        assertTrue(mapOfAllTask.containsKey("Test 1"));
+        assertTrue(allValues.contains(t1));
+
+        HashMap<String,Task> mapOfIncTask = todo.getIncompleteTaskMap();
+        Collection<Task> incompleteValues = todo.getIncompleteTaskMap().values();
+        assertTrue(mapOfIncTask.containsKey("Test 1"));
+        assertTrue(incompleteValues.contains(t1));
     }
 
     @Test
@@ -63,7 +75,7 @@ public class ToDoListTest {
         }
         try {
             todo.addTask("Too many", "12/31/2019", "2");
-            fail("I was not expecting to reach this line of code!");
+            fail();
         } catch (TooManyThingsToDo e) {
             System.out.println("Caught the exception!");
         }
@@ -74,7 +86,7 @@ public class ToDoListTest {
         todo.addTask("Test 1", "01/01/2020", "2");
         todo.addTask("Test 2", "01/02/2020", "2");
         todo.completeTask("Test 2");
-        HashMap<String,Task> mapOfTask = todo.getTaskMap();
+        HashMap<String,Task> mapOfTask = todo.getAllTaskMap();
         Task t1 = mapOfTask.get("Test 1");
         Task t2 = mapOfTask.get("Test 2");
         assertFalse(t1.getCompleted());
@@ -125,59 +137,91 @@ public class ToDoListTest {
     @Test
     void testAddToMap() {
         Task t1 = new RegularTask("Test","10/29/2019");
-        assertFalse(todo.getTaskMap().containsKey("Test"));
-        assertEquals(0, todo.getTaskMap().size());
+        assertFalse(todo.getAllTaskMap().containsKey("Test"));
+        assertEquals(0, todo.getAllTaskMap().size());
+
         todo.addToMap(t1);
-        assertTrue(todo.getTaskMap().containsKey("Test"));
-        assertEquals(1, todo.getTaskMap().size());
+        assertTrue(todo.getAllTaskMap().containsKey("Test"));
+        assertEquals(1, todo.getAllTaskMap().size());
+        assertTrue(todo.getIncompleteTaskMap().containsKey("Test"));
+        assertEquals(1, todo.getIncompleteTaskMap().size());
     }
 
     @Test
     void testAddToListAlreadyThere() {
         Task t1 = new RegularTask("Test","10/29/2019");
-        assertFalse(todo.getTaskMap().containsKey(t1));
-        assertEquals(0, todo.getTaskMap().size());
+        assertFalse(todo.getAllTaskMap().containsKey(t1));
+        assertEquals(0, todo.getAllTaskMap().size());
+
         todo.addToMap(t1);
-        assertTrue(todo.getTaskMap().containsKey("Test"));
-        assertEquals(1, todo.getTaskMap().size());
+        assertTrue(todo.getAllTaskMap().containsKey("Test"));
+        assertEquals(1, todo.getAllTaskMap().size());
+
         todo.addToMap(t1);
-        assertTrue(todo.getTaskMap().containsKey("Test"));
-        assertEquals(1, todo.getTaskMap().size());
+        assertTrue(todo.getAllTaskMap().containsKey("Test"));
+        assertEquals(1, todo.getAllTaskMap().size());
     }
 
     @Test
     void testRemoveFromList() {
         Task t1 = new RegularTask("Test","10/29/2019");
-        todo.getTaskMap().put(t1.getTaskName(), t1);
-        assertTrue(todo.getTaskMap().containsKey("Test"));
+        todo.addToMap(t1);
+        assertTrue(todo.getAllTaskMap().containsKey("Test"));
+        assertTrue(todo.getIncompleteTaskMap().containsKey("Test"));
+
         todo.removeFromMap("Test");
-        assertFalse(todo.getTaskMap().containsKey("Test"));
+        assertFalse(todo.getAllTaskMap().containsKey("Test"));
+        assertFalse(todo.getIncompleteTaskMap().containsKey("Test"));
     }
 
     @Test
     void testRemoveFromListNotThere() {
-        assertFalse(todo.getTaskMap().containsKey("Test"));
+        assertFalse(todo.getAllTaskMap().containsKey("Test"));
         todo.removeFromMap("Test");
-        assertFalse(todo.getTaskMap().containsKey("Test"));
+        assertFalse(todo.getAllTaskMap().containsKey("Test"));
     }
 
     @Test
-    void testConvertToArray() {
+    void testConvertToArrayAllMap() {
         Task t1 = new RegularTask("Test","10/29/2019");
-        Task t2 = new RegularTask("Test2","10/29/2019");
         ArrayList<Task> array = new ArrayList<>();
         array.add(t1);
-        array.add(t2);
-        todo.getTaskMap().put(t1.getTaskName(), t1);
-        todo.getTaskMap().put(t2.getTaskName(), t2);
-        assertEquals(array, todo.convertToArray());
+        todo.getAllTaskMap().put(t1.getTaskName(), t1);
+        assertEquals(array, todo.convertToArray("1"));
     }
 
     @Test
-    void testConvertToArrayNull() {
+    void testConvertToArrayAllMapEmpty() {
         try {
-            todo.convertToArray();
+            todo.convertToArray("1");
             fail();
         } catch (NullPointerException e) {}
+    }
+
+    @Test
+    void testConvertToArrayIncompleteMap() {
+        Task t1 = new RegularTask("Test","10/29/2019");
+        ArrayList<Task> array = new ArrayList<>();
+        array.add(t1);
+        todo.getIncompleteTaskMap().put(t1.getTaskName(), t1);
+        assertEquals(array, todo.convertToArray("2"));
+    }
+
+    @Test
+    void testConvertToArrayIncompleteMapEmpty() {
+        try {
+            todo.convertToArray("2");
+            fail();
+        } catch (NullPointerException e) {}
+    }
+
+    @Test
+    void testUpdate() {
+        Task t1 = new RegularTask("test", "11/12/2019");
+        todo.addToIncompleteMap(t1);
+        assertTrue(todo.getIncompleteTaskMap().containsKey("test"));
+
+        todo.update(t1.getTaskName());
+        assertFalse(todo.getIncompleteTaskMap().containsKey("test"));
     }
 }

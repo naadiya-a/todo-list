@@ -5,28 +5,31 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class ToDoList {
+public class ToDoList implements Observer {
 
     static final int MAX_INCOMPLETE = 30;
 
-    private HashMap<String, Task> taskMap;
+    private HashMap<String, Task> allTaskMap;
     private Save save = new Save();
+    private HashMap<String, Task> incompleteTaskMap;
 
     public ToDoList() {
-        taskMap = new HashMap<>();
+        allTaskMap = new HashMap<>();
+        incompleteTaskMap = new HashMap<>();
     }
 
     // MODIFIES: taskList
     // EFFECTS: adds new task to taskList
     public void addTask(String newTaskName, String newDueDate, String urgent) throws TooManyThingsToDo {
         Task newTask;
-        if (taskMap.size() < MAX_INCOMPLETE) {
+        if (allTaskMap.size() < MAX_INCOMPLETE) {
             if (urgent.equals("2")) {
                 newTask = new RegularTask(newTaskName, newDueDate);
             } else {
                 newTask = new UrgentTask(newTaskName, newDueDate);
             }
             addToMap(newTask);
+            newTask.addObserver(this);
         } else {
             throw new TooManyThingsToDo();
         }
@@ -36,9 +39,17 @@ public class ToDoList {
     // EFFECTS: if task is not already in the list,
     //          adds the task to the list and sets itself as the task's list
     public void addToMap(Task task) {
-        if (!taskMap.containsKey(task.getTaskName())) {
-            taskMap.put(task.getTaskName(), task);
+        if (!allTaskMap.containsKey(task.getTaskName())) {
+            allTaskMap.put(task.getTaskName(), task);
             task.addList(this);
+
+            addToIncompleteMap(task);
+        }
+    }
+
+    void addToIncompleteMap(Task task) {
+        if (!incompleteTaskMap.containsKey(task.getTaskName()) && !task.getCompleted()) {
+            incompleteTaskMap.put(task.getTaskName(), task);
         }
     }
 
@@ -46,21 +57,24 @@ public class ToDoList {
     // EFFECTS: if task is in the list,
     //          removes the task from the list and removes itself as the task's list
     public void removeFromMap(String taskName) {
-        if (taskMap.containsKey(taskName)) {
-            Task t = taskMap.get(taskName);
-            taskMap.remove(taskName);
+        if (allTaskMap.containsKey(taskName)) {
+            Task t = allTaskMap.get(taskName);
+            allTaskMap.remove(taskName);
             t.removeList();
+
+            incompleteTaskMap.remove(taskName);
         }
     }
 
     // EFFECTS: finds completed task from taskList
     public void completeTask(String completeTaskName) {
-        Task t = taskMap.get(completeTaskName);
+        Task t = allTaskMap.get(completeTaskName);
         t.isCompleted();
     }
 
+    // EFFECTS: decomposes a task's components into one string, for every task in the map for it to be saved
     public void save(File filename) {
-        for (Task t : taskMap.values()) {
+        for (Task t : allTaskMap.values()) {
             String taskString = (t.getTaskName() + ";"
                     + t.getDueDate() + ";"
                     + t.getCompleted());
@@ -69,32 +83,51 @@ public class ToDoList {
     }
 
     // EFFECTS: prints the name, due date, and completed status of each task in the list
-    public void printCollection() {
+    public void printCollection(String list) {
         try {
-            ArrayList<Task> taskList = convertToArray();
+            ArrayList<Task> taskList = convertToArray(list);
             for (Task t : taskList) {
                 System.out.print("Name: " + t.getTaskName() + " ");
                 System.out.print("Due date: " + t.getDueDate() + " ");
                 System.out.println("Completed status: " + t.getCompleted());
             }
         } catch (NullPointerException e) {
-            System.out.println("Your list is empty.");
+            System.out.println("The list is empty.");
         }
     }
 
     // Reference: https://stackoverflow.com/questions/1968068/java-how-to-convert-type-collection-into-arraylist
     // EFFECTS: converts taskMap values collection into ArrayList
-    public ArrayList<Task> convertToArray() {
-        if (!taskMap.isEmpty()) {
-            Collection<Task> tasks = taskMap.values();
-            return new ArrayList<>(tasks);
+    public ArrayList<Task> convertToArray(String list) {
+        if (list.equals("1")) {
+            if (!allTaskMap.isEmpty()) {
+                Collection<Task> tasks = allTaskMap.values();
+                return new ArrayList<>(tasks);
+            }
+        } else {
+            if (!incompleteTaskMap.isEmpty()) {
+                Collection<Task> tasks = incompleteTaskMap.values();
+                return new ArrayList<>(tasks);
+            }
         }
         throw new NullPointerException();
     }
 
-    public HashMap<String, Task> getTaskMap() {
-        return this.taskMap;
+    // MODIFIES: this
+    // EFFECTS: removes the task from the map of incomplete tasks
+    @Override
+    public void update(String taskName) {
+        incompleteTaskMap.remove(taskName);
     }
+
+    public HashMap<String, Task> getAllTaskMap() {
+        return this.allTaskMap;
+    }
+
+    public HashMap<String, Task> getIncompleteTaskMap() {
+        return this.incompleteTaskMap;
+    }
+
 
     //    // EFFECTS: reads saved to-do list from text file
 //    public List<String> load(String filePath) throws IOException {

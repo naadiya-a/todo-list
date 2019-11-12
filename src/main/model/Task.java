@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-public abstract class Task {
+public abstract class Task extends Subject {
 
     protected String taskName;
     private Date dueDate;
@@ -45,6 +45,7 @@ public abstract class Task {
     public void isCompleted() {
 //        this.setName("✓ " + this.taskName);
         this.completed = true;
+        notifyObservers(this.getTaskName());
     }
 
     // MODIFIES: this

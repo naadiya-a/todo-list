@@ -51,7 +51,8 @@ public class UserInput {
             System.out.println("The task has been marked as complete!");
         }
         if (i == 3) {
-            toDoList.printCollection();
+            inputTaskListToView();
+//            toDoList.printCollection();
         }
         if (i == 4) {
             toDoList.save(new File("./data/todoListData.txt"));
@@ -83,5 +84,13 @@ public class UserInput {
         scanner.nextLine();
         String name = scanner.nextLine();
         toDoList.completeTask(name);
+    }
+
+    private void inputTaskListToView() {
+        System.out.println("[1] View all tasks");
+        System.out.println("[2] View incomplete tasks only");
+        scanner.nextLine();
+        String list = scanner.nextLine();
+        toDoList.printCollection(list);
     }
 }
