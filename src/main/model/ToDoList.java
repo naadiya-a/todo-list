@@ -1,15 +1,15 @@
 package model;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class ToDoList {
 
-    public static final int MAX_INCOMPLETE = 30;
+    static final int MAX_INCOMPLETE = 30;
 
-    public HashMap<String, Task> taskMap;
+    private HashMap<String, Task> taskMap;
     private Save save = new Save();
 
     public ToDoList() {
@@ -71,10 +71,12 @@ public class ToDoList {
     // EFFECTS: prints the name, due date, and completed status of each task in the list
     public void printCollection() {
         try {
-            Task t = convertToArray();
-            System.out.print("Name: " + t.getTaskName() + " ");
-            System.out.print("Due date: " + t.getDueDate() + " ");
-            System.out.println("Completed status: " + t.getCompleted());
+            ArrayList<Task> taskList = convertToArray();
+            for (Task t : taskList) {
+                System.out.print("Name: " + t.getTaskName() + " ");
+                System.out.print("Due date: " + t.getDueDate() + " ");
+                System.out.println("Completed status: " + t.getCompleted());
+            }
         } catch (NullPointerException e) {
             System.out.println("Your list is empty.");
         }
@@ -82,15 +84,12 @@ public class ToDoList {
 
     // Reference: https://stackoverflow.com/questions/1968068/java-how-to-convert-type-collection-into-arraylist
     // EFFECTS: converts taskMap values collection into ArrayList
-    public Task convertToArray() {
+    public ArrayList<Task> convertToArray() {
         if (!taskMap.isEmpty()) {
             Collection<Task> tasks = taskMap.values();
-            ArrayList<Task> taskList = new ArrayList<>(tasks);
-            for (Task t : taskList) {
-                return t;
-            }
+            return new ArrayList<>(tasks);
         }
-        return null;
+        throw new NullPointerException();
     }
 
     public HashMap<String, Task> getTaskMap() {

@@ -4,13 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -166,12 +164,20 @@ public class ToDoListTest {
     @Test
     void testConvertToArray() {
         Task t1 = new RegularTask("Test","10/29/2019");
+        Task t2 = new RegularTask("Test2","10/29/2019");
+        ArrayList<Task> array = new ArrayList<>();
+        array.add(t1);
+        array.add(t2);
         todo.getTaskMap().put(t1.getTaskName(), t1);
-        assertEquals(t1, todo.convertToArray());
+        todo.getTaskMap().put(t2.getTaskName(), t2);
+        assertEquals(array, todo.convertToArray());
     }
 
     @Test
     void testConvertToArrayNull() {
-        assertNull(todo.convertToArray());
+        try {
+            todo.convertToArray();
+            fail();
+        } catch (NullPointerException e) {}
     }
 }
