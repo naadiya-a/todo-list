@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public abstract class Task extends Subject {
 
-    protected String taskName;
+    private String taskName;
     private Date dueDate;
     private boolean completed;
     private ToDoList toDoList;
@@ -20,20 +20,19 @@ public abstract class Task extends Subject {
 
     // MODIFIES: this
     // EFFECTS: assigns name to the task
-    public void setName(String name) {
+    void setName(String name) {
         this.taskName = name;
     }
 
     // Reference: https://stackoverflow.com/questions/11665195/unhandled-exception-type-parseexception
     // MODIFIES: this
     // EFFECTS: assigns due date to the task
-    public void setDueDate(String date) {
+    void setDueDate(String date) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             sdf.setLenient(false);
             this.dueDate = sdf.parse(date);
         } catch (ParseException e) {
-//            e.printStackTrace();
             System.out.println("The due date was not set");
         }
         System.out.println(this.taskName + " is due at " + this.dueDate);
@@ -41,9 +40,8 @@ public abstract class Task extends Subject {
 
     // MODIFIES: this
     // EFFECTS: changes completed status to true
-    //          and adds check mark to its name
-    public void isCompleted() {
-//        this.setName("✓ " + this.taskName);
+    //          and notifies its observers of the change
+    void isCompleted() {
         this.completed = true;
         notifyObservers(this.getTaskName());
     }

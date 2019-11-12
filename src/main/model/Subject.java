@@ -7,10 +7,6 @@ public abstract class Subject {
 
     protected List<Observer> observers = new ArrayList<>();
 
-//    public void Subject() {
-//        observers = new ArrayList<>();
-//    }
-
     public void addObserver(Observer observer) {
         observers.add(observer);
     }

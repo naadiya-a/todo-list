@@ -1,7 +1,6 @@
 package ui;
 
 import model.Load;
-import model.Save;
 import model.ToDoList;
 import model.TooManyThingsToDo;
 
@@ -13,7 +12,6 @@ public class UserInput {
     private Scanner scanner;
     private ToDoList toDoList;
     private Load load = new Load();
-//    private Save save;
 
     public UserInput() {
         scanner = new Scanner(System.in);
@@ -52,7 +50,6 @@ public class UserInput {
         }
         if (i == 3) {
             inputTaskListToView();
-//            toDoList.printCollection();
         }
         if (i == 4) {
             toDoList.save(new File("./data/todoListData.txt"));
@@ -67,18 +64,21 @@ public class UserInput {
         return scanner.nextLine();
     }
 
+    // EFFECTS: gets due date of new task to be created
+    //          and returns the date string
     private String inputDueDate() {
         System.out.println("Type in the due date as: MM/DD/YYYY");
         return scanner.nextLine();
     }
 
+    // EFFECTS: gets user input on whether new task should be urgent or not
+    //          and returns the selection
     private String inputUrgent() {
         System.out.println("Is this task urgent? Select [1] for yes, [2] for no");
         return scanner.nextLine();
     }
 
     // EFFECTS: gets name of completed task
-    //          and returns the name
     private void inputCompleteTask() {
         System.out.println("Enter the name of the completed task");
         scanner.nextLine();
@@ -86,6 +86,7 @@ public class UserInput {
         toDoList.completeTask(name);
     }
 
+    // EFFECTS: gets user input on which list to see
     private void inputTaskListToView() {
         System.out.println("[1] View all tasks");
         System.out.println("[2] View incomplete tasks only");

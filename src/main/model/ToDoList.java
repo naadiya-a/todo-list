@@ -36,9 +36,9 @@ public class ToDoList implements Observer {
     }
 
     // MODIFIES: this
-    // EFFECTS: if task is not already in the list,
-    //          adds the task to the list and sets itself as the task's list
-    public void addToMap(Task task) {
+    // EFFECTS: if task is not already in the map,
+    //          adds the task to the map of all tasks and sets itself as the task's ToDoList
+    void addToMap(Task task) {
         if (!allTaskMap.containsKey(task.getTaskName())) {
             allTaskMap.put(task.getTaskName(), task);
             task.addList(this);
@@ -47,16 +47,19 @@ public class ToDoList implements Observer {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: if task is not completed,
+    //          adds the task to the incomplete task map
     void addToIncompleteMap(Task task) {
-        if (!incompleteTaskMap.containsKey(task.getTaskName()) && !task.getCompleted()) {
+        if (!task.getCompleted()) {
             incompleteTaskMap.put(task.getTaskName(), task);
         }
     }
 
     // MODIFIES: this
     // EFFECTS: if task is in the list,
-    //          removes the task from the list and removes itself as the task's list
-    public void removeFromMap(String taskName) {
+    //          removes the task from the map of all tasks and removes itself as the task's ToDoList
+    void removeFromMap(String taskName) {
         if (allTaskMap.containsKey(taskName)) {
             Task t = allTaskMap.get(taskName);
             allTaskMap.remove(taskName);
@@ -98,7 +101,7 @@ public class ToDoList implements Observer {
 
     // Reference: https://stackoverflow.com/questions/1968068/java-how-to-convert-type-collection-into-arraylist
     // EFFECTS: converts taskMap values collection into ArrayList
-    public ArrayList<Task> convertToArray(String list) {
+    ArrayList<Task> convertToArray(String list) {
         if (list.equals("1")) {
             if (!allTaskMap.isEmpty()) {
                 Collection<Task> tasks = allTaskMap.values();

@@ -212,7 +212,9 @@ public class ToDoListTest {
         try {
             todo.convertToArray("2");
             fail();
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            System.out.println("Caught the exception");
+        }
     }
 
     @Test
