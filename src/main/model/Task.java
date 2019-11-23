@@ -33,7 +33,7 @@ public abstract class Task extends Subject {
             sdf.setLenient(false);
             this.dueDate = sdf.parse(date);
         } catch (ParseException e) {
-            System.out.println("The due date was not set");
+            System.out.println("The due date was not set because an invalid date was entered");
         }
         System.out.println(this.taskName + " is due at " + this.dueDate);
     }
@@ -48,7 +48,7 @@ public abstract class Task extends Subject {
 
     // MODIFIES: this
     // EFFECTS: sets the toDoList as this task's list and adds itself to the toDoList
-    public void addList(ToDoList toDoList) {
+    void addList(ToDoList toDoList) {
         this.toDoList = toDoList;
         toDoList.addToMap(this);
     }

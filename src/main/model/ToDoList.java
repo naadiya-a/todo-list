@@ -10,8 +10,8 @@ public class ToDoList implements Observer {
     static final int MAX_INCOMPLETE = 30;
 
     private HashMap<String, Task> allTaskMap;
-    private Save save = new Save();
     private HashMap<String, Task> incompleteTaskMap;
+    private Save save = new Save();
 
     public ToDoList() {
         allTaskMap = new HashMap<>();
@@ -59,7 +59,7 @@ public class ToDoList implements Observer {
     // MODIFIES: this
     // EFFECTS: if task is in the list,
     //          removes the task from the map of all tasks and removes itself as the task's ToDoList
-    void removeFromMap(String taskName) {
+    public void removeFromMap(String taskName) {
         if (allTaskMap.containsKey(taskName)) {
             Task t = allTaskMap.get(taskName);
             allTaskMap.remove(taskName);

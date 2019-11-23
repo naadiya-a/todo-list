@@ -1,12 +1,18 @@
 package ui;
 
-import network.ReadWebPage;
-
+import javax.swing.*;
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        ReadWebPage.main(args);
-        new UserInput();
+    public static void main(String[] args) throws IOException {
+//        ReadWebPage.main(args);
+//        new UserInput();
+//        new LabelChanger();
+        new ToDoListGUI();
+
+//        JFrame frame = new JFrame("ToDo List");
+//        frame.setContentPane(new ToDoListGUI(), );
     }
+
+
 }

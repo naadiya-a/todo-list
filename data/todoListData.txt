@@ -1,9 +1,5 @@
-test304;Thu Oct 03 00:00:00 PDT 2019;false
 hi;Sun Dec 20 00:00:00 PST 2020;false
 hey;null;false
-hi;Mon Dec 21 00:00:00 PST 2020;false
 1;Sun Feb 02 00:00:00 PST 2020;true
 2;Thu Feb 20 00:00:00 PST 2020;false
-jo;Thu Feb 20 00:00:00 PST 2020;false
-ju;Thu Feb 02 00:00:00 PST 4040;true
-ji;Tue Feb 02 00:00:00 PST 3030;false
+4;null;false
