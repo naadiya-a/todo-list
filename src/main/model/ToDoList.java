@@ -1,5 +1,6 @@
 package model;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,8 +19,8 @@ public class ToDoList implements Observer {
         incompleteTaskMap = new HashMap<>();
     }
 
-    // MODIFIES: taskList
-    // EFFECTS: adds new task to taskList
+    // MODIFIES: allTaskMap, incompleteTaskMap
+    // EFFECTS: adds new task to the task maps
     public void addTask(String newTaskName, String newDueDate, String urgent) throws TooManyThingsToDo {
         Task newTask;
         if (allTaskMap.size() < MAX_INCOMPLETE) {
@@ -59,7 +60,7 @@ public class ToDoList implements Observer {
     // MODIFIES: this
     // EFFECTS: if task is in the list,
     //          removes the task from the map of all tasks and removes itself as the task's ToDoList
-    public void removeFromMap(String taskName) {
+    void removeFromMap(String taskName) {
         if (allTaskMap.containsKey(taskName)) {
             Task t = allTaskMap.get(taskName);
             allTaskMap.remove(taskName);
@@ -69,6 +70,7 @@ public class ToDoList implements Observer {
         }
     }
 
+    // MODIFIES: the specified task
     // EFFECTS: finds completed task from taskList
     public void completeTask(String completeTaskName) {
         Task t = allTaskMap.get(completeTaskName);
@@ -90,12 +92,17 @@ public class ToDoList implements Observer {
         try {
             ArrayList<Task> taskList = convertToArray(list);
             for (Task t : taskList) {
-                System.out.print("Name: " + t.getTaskName() + " ");
-                System.out.print("Due date: " + t.getDueDate() + " ");
-                System.out.println("Completed status: " + t.getCompleted());
+//                System.out.print("Name: " + t.getTaskName() + " ");
+//                System.out.print("Due date: " + t.getDueDate() + " ");
+//                System.out.println("Completed status: " + t.getCompleted());
+                JOptionPane.showMessageDialog(null,
+                        "Name: " + t.getTaskName() + " "
+                        + "\nDue date: " + t.getDueDate() + " "
+                        + "\nCompleted status: " + t.getCompleted());
             }
         } catch (NullPointerException e) {
-            System.out.println("The list is empty.");
+//            System.out.println("The list is empty.");
+            JOptionPane.showMessageDialog(null,"The list is empty.");
         }
     }
 

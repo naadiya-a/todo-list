@@ -1,5 +1,6 @@
 package model;
 
+import javax.swing.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,10 +33,14 @@ public abstract class Task extends Subject {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             sdf.setLenient(false);
             this.dueDate = sdf.parse(date);
+            JOptionPane.showMessageDialog(null,
+                    this.taskName + " is due at " + this.dueDate);
         } catch (ParseException e) {
-            System.out.println("The due date was not set because an invalid date was entered");
+//            System.out.println("The due date was not set because an invalid date was entered");
+            JOptionPane.showMessageDialog(null,
+                    "The due date was not set because an invalid date was entered");
         }
-        System.out.println(this.taskName + " is due at " + this.dueDate);
+//        System.out.println(this.taskName + " is due at " + this.dueDate);
     }
 
     // MODIFIES: this
@@ -55,13 +60,16 @@ public abstract class Task extends Subject {
 
     // MODIFIES: this
     // EFFECTS: sets this task's list to null and removes itself from the toDoList
-    public void removeList() {
+    void removeList() {
         if (toDoList != null) {
             toDoList.removeFromMap(this.taskName);
         }
         this.toDoList = null;
     }
 
+    // EFFECTS: compares the two given Task objects and
+    //              if all fields are matched it returns true,
+    //              if any field is not matched it returns false
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -76,6 +84,7 @@ public abstract class Task extends Subject {
                 && Objects.equals(dueDate, task.dueDate);
     }
 
+    // EFFECTS: returns the integer hash code value of the Task object
     @Override
     public int hashCode() {
         return Objects.hash(taskName, dueDate, completed);

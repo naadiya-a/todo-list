@@ -4,14 +4,12 @@ import model.ToDoList;
 import model.TooManyThingsToDo;
 
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 
 public class ToDoListGUI extends JFrame implements ActionListener {
 
@@ -21,7 +19,7 @@ public class ToDoListGUI extends JFrame implements ActionListener {
     private ToDoList toDoList = new ToDoList();
 
     // Reference: https://stackoverflow.com/questions/284899/how-do-you-add-an-actionlistener-onto-a-jbutton-in-java
-    ToDoListGUI() {
+    public ToDoListGUI() {
         super("ToDo List");
 
 //        // Reference: https://www.codejava.net/java-se/swing/redirect-standard-output-streams-to-jtextarea
@@ -33,7 +31,6 @@ public class ToDoListGUI extends JFrame implements ActionListener {
 
         JPanel mainPanel = new JPanel();
         setSize(new Dimension(400, 400));
-//        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -61,7 +58,6 @@ public class ToDoListGUI extends JFrame implements ActionListener {
 
         setVisible(true);
 
-
         // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/toplevel.html
 //        contentPanel = new JPanel(new BorderLayout());
 //        contentPanel.setBorder(someBorder);
@@ -71,6 +67,8 @@ public class ToDoListGUI extends JFrame implements ActionListener {
     }
 
     // Reference: https://stackoverflow.com/questions/30265720/java-joptionpane-radio-buttons
+    // EFFECTS: identifies the action event from the button click
+    //          and calls the appropriate method to present the new option pane
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == b1) {
@@ -86,22 +84,50 @@ public class ToDoListGUI extends JFrame implements ActionListener {
 
     // Reference: https://stackoverflow.com/questions/30265720/java-joptionpane-radio-buttons
     private void actionOne() {
-        String name = JOptionPane.showInputDialog("Enter the name of the task");
-        String dueDate = JOptionPane.showInputDialog("Enter the due date in the format: MM/DD/YYYY");
+//        String name = JOptionPane.showInputDialog("Enter the name of the task");
+//        String dueDate = JOptionPane.showInputDialog("Enter the due date in the format: MM/DD/YYYY");
+//        String urgent = null;
+////        String[] values = {"Yes", "No"};
+//        Object selected = JOptionPane.showInputDialog(null, "Is the task urgent?",
+//                null, JOptionPane.QUESTION_MESSAGE,null, new String[]{"Yes", "No"},"No");
+//        if (selected == null) {
+//            JOptionPane.showMessageDialog(null, "The task was not created");
+//        } else if (selected.toString().equals("Yes")) {
+//            urgent = "1";
+//        } else {
+//            urgent = "2";
+//        }
+//        try {
+//            toDoList.addTask(name, dueDate, urgent);
+//        } catch (TooManyThingsToDo tooManyThingsToDo) {
+//            JOptionPane.showMessageDialog(null,
+//                    "There are too many incomplete tasks in your list.");
+//        }
+        try {
+            toDoList.addTask(JOptionPane.showInputDialog("Enter the name of the task"),
+                    JOptionPane.showInputDialog("Enter the due date in the format: MM/DD/YYYY"),
+                    inputUrgent());
+        } catch (TooManyThingsToDo e) {
+            JOptionPane.showMessageDialog(null,
+                    "There are too many incomplete tasks in your list.");
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null,
+                    "The task was not created. Please ensure all the values are filled in.");
+        }
+    }
+
+    private String inputUrgent() {
         String urgent;
-        String[] values = {"Yes", "No"};
         Object selected = JOptionPane.showInputDialog(null, "Is the task urgent?",
-                null, JOptionPane.QUESTION_MESSAGE,null, values,"No");
-        if (selected.toString().equals("Yes")) {
+                null, JOptionPane.QUESTION_MESSAGE,null, new String[]{"Yes", "No"},"No");
+        if (selected == null) {
+            urgent = null;
+        } else if (selected.toString().equals("Yes")) {
             urgent = "1";
         } else {
             urgent = "2";
         }
-        try {
-            toDoList.addTask(name, dueDate, urgent);
-        } catch (TooManyThingsToDo tooManyThingsToDo) {
-            System.out.println("There are too many incomplete tasks in your list.");
-        }
+        return urgent;
     }
 
     private void actionTwo() {

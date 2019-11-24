@@ -1,5 +1,6 @@
 package model;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,7 +24,8 @@ public class Save implements Saveable {
             printWriter.println(itemToSave);
             printWriter.close();
         } catch (IOException e) {
-            System.out.println("Cannot save exception");
+//            System.out.println("Cannot save exception");
+            JOptionPane.showMessageDialog(null,"Cannot save exception");
         }
     }
 }
