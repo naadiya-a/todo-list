@@ -1,51 +1,63 @@
 package ui;
 
+import model.ToDoList;
+import model.TooManyThingsToDo;
+
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 public class ToDoListGUI extends JFrame implements ActionListener {
 
-    JPanel mainPanel = new JPanel();
-    JLabel menuLabel = new JLabel("Would you like to:");
+    private JButton b1;
+    private JButton b2;
+    private JButton b3;
+    private ToDoList toDoList = new ToDoList();
 
     // Reference: https://stackoverflow.com/questions/284899/how-do-you-add-an-actionlistener-onto-a-jbutton-in-java
-    public ToDoListGUI() {
+    ToDoListGUI() {
         super("ToDo List");
 
+//        // Reference: https://www.codejava.net/java-se/swing/redirect-standard-output-streams-to-jtextarea
+//        JTextArea textArea = new JTextArea(50, 10);
+//        textArea.setEditable(false);
+//        PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
+//        System.setOut(printStream);
+//        System.setErr(printStream);
+
+        JPanel mainPanel = new JPanel();
         setSize(new Dimension(400, 400));
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                toDoList.save(new File("./data/todoListData.txt"));
+                System.exit(0);
+            }
+        });
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton b1 = new JButton("Add a new task");
-        b1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //
-            }
-        });
+        JLabel menuLabel = new JLabel("Would you like to:");
+        b1 = new JButton("Add a new task");
+        b2 = new JButton("Mark a task as completed");
+        b3 = new JButton("View your ToDo List");
 
-        JButton b2 = new JButton("Mark a task as completed");
-        b1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //
-            }
-        });
-
-        JButton b3 = new JButton("View your ToDo List");
-        b1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //
-            }
-        });
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+        b3.addActionListener(this);
 
         mainPanel.add(menuLabel);
         mainPanel.add(b1);
         mainPanel.add(b2);
         mainPanel.add(b3);
         add(mainPanel);
-//        getContentPane().add(mainPanel);
 
         setVisible(true);
 
@@ -55,11 +67,60 @@ public class ToDoListGUI extends JFrame implements ActionListener {
 //        contentPanel.setBorder(someBorder);
 //        contentPanel.add(someComponent, BorderLayout.CENTER);
 //        contentPanel.add(anotherComponent, BorderLayout.PAGE_END);
-//
 //        frame.setContentPane(contentPanel);
     }
 
+    // Reference: https://stackoverflow.com/questions/30265720/java-joptionpane-radio-buttons
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == b1) {
+            actionOne();
+        }
+        if (e.getSource() == b2) {
+            actionTwo();
+        }
+        if (e.getSource() == b3) {
+            actionThree();
+        }
+    }
+
+    // Reference: https://stackoverflow.com/questions/30265720/java-joptionpane-radio-buttons
+    private void actionOne() {
+        String name = JOptionPane.showInputDialog("Enter the name of the task");
+        String dueDate = JOptionPane.showInputDialog("Enter the due date in the format: MM/DD/YYYY");
+        String urgent;
+        String[] values = {"Yes", "No"};
+        Object selected = JOptionPane.showInputDialog(null, "Is the task urgent?",
+                null, JOptionPane.QUESTION_MESSAGE,null, values,"No");
+        if (selected.toString().equals("Yes")) {
+            urgent = "1";
+        } else {
+            urgent = "2";
+        }
+        try {
+            toDoList.addTask(name, dueDate, urgent);
+        } catch (TooManyThingsToDo tooManyThingsToDo) {
+            System.out.println("There are too many incomplete tasks in your list.");
+        }
+    }
+
+    private void actionTwo() {
+        String completedTask = JOptionPane.showInputDialog("Enter the name of the completed task");
+        toDoList.completeTask(completedTask);
+    }
+
+    // Reference: https://stackoverflow.com/questions/30265720/java-joptionpane-radio-buttons
+    private void actionThree() {
+        String list;
+        String[] values = {"View all tasks", "View incomplete tasks only"};
+        Object selected = JOptionPane.showInputDialog(null,
+                "Which tasks would you like to view?",null, JOptionPane.QUESTION_MESSAGE,
+                null, values,"View all tasks");
+        if (selected.toString().equals("View all tasks")) {
+            list = "1";
+        } else {
+            list = "2";
+        }
+        toDoList.printCollection(list);
     }
 }

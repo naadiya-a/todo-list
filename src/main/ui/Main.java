@@ -9,9 +9,6 @@ public class Main {
 //        new UserInput();
 //        new LabelChanger();
         new ToDoListGUI();
-
-//        JFrame frame = new JFrame("ToDo List");
-//        frame.setContentPane(new ToDoListGUI(), );
     }
 
 
