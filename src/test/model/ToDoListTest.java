@@ -86,11 +86,18 @@ public class ToDoListTest {
         todo.addTask("Test 1", "01/01/2020", "2");
         todo.addTask("Test 2", "01/02/2020", "2");
         todo.completeTask("Test 2");
-        HashMap<String,Task> mapOfTask = todo.getAllTaskMap();
-        Task t1 = mapOfTask.get("Test 1");
-        Task t2 = mapOfTask.get("Test 2");
+        Task t1 = todo.getAllTaskMap().get("Test 1");
+        Task t2 = todo.getAllTaskMap().get("Test 2");
         assertFalse(t1.getCompleted());
         assertTrue(t2.getCompleted());
+    }
+
+    @Test
+    void testCompleteTaskNotFound() throws TooManyThingsToDo {
+        todo.addTask("Test", "01/01/2020", "2");
+        todo.completeTask("Test 2");
+        assertFalse(todo.getAllTaskMap().get("Test").getCompleted());
+        assertFalse(todo.getAllTaskMap().containsKey("Test 2"));
     }
 
 //    @Test

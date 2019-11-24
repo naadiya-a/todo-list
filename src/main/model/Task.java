@@ -33,8 +33,7 @@ public abstract class Task extends Subject {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             sdf.setLenient(false);
             this.dueDate = sdf.parse(date);
-            JOptionPane.showMessageDialog(null,
-                    this.taskName + " is due at " + this.dueDate);
+//            JOptionPane.showMessageDialog(null, this.taskName + " is due at " + this.dueDate);
         } catch (ParseException e) {
 //            System.out.println("The due date was not set because an invalid date was entered");
             JOptionPane.showMessageDialog(null,

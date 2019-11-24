@@ -73,8 +73,12 @@ public class ToDoList implements Observer {
     // MODIFIES: the specified task
     // EFFECTS: finds completed task from taskList
     public void completeTask(String completeTaskName) {
-        Task t = allTaskMap.get(completeTaskName);
-        t.isCompleted();
+        if (allTaskMap.containsKey(completeTaskName)) {
+            Task t = allTaskMap.get(completeTaskName);
+            t.isCompleted();
+        } else {
+            JOptionPane.showMessageDialog(null, "The task was not found");
+        }
     }
 
     // EFFECTS: decomposes a task's components into one string, for every task in the map for it to be saved
@@ -95,14 +99,12 @@ public class ToDoList implements Observer {
 //                System.out.print("Name: " + t.getTaskName() + " ");
 //                System.out.print("Due date: " + t.getDueDate() + " ");
 //                System.out.println("Completed status: " + t.getCompleted());
-                JOptionPane.showMessageDialog(null,
-                        "Name: " + t.getTaskName() + " "
-                        + "\nDue date: " + t.getDueDate() + " "
-                        + "\nCompleted status: " + t.getCompleted());
+                JOptionPane.showMessageDialog(null,"Name: " + t.getTaskName()
+                                + "\nDue date: " + t.getDueDate() + "\nCompleted status: " + t.getCompleted());
             }
         } catch (NullPointerException e) {
 //            System.out.println("The list is empty.");
-            JOptionPane.showMessageDialog(null,"The list is empty.");
+            JOptionPane.showMessageDialog(null, "The list is empty.");
         }
     }
 

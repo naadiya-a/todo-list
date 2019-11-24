@@ -30,10 +30,8 @@ public class Load implements Loadable {
 //                System.out.print("Name: " + partsOfLine.get(0) + " ");
 //                System.out.print("Due date: " + partsOfLine.get(1) + " ");
 //                System.out.println("Completed status: " + partsOfLine.get(2));
-                JOptionPane.showMessageDialog(null,
-                        "Name: " + partsOfLine.get(0) + " ");
-                JOptionPane.showMessageDialog(null,
-                        "Due date: " + partsOfLine.get(1) + " ");
+                JOptionPane.showMessageDialog(null,"Name: " + partsOfLine.get(0) + " ");
+                JOptionPane.showMessageDialog(null,"Due date: " + partsOfLine.get(1) + " ");
                 JOptionPane.showMessageDialog(null,
                         "Completed status: " + partsOfLine.get(2));
             }

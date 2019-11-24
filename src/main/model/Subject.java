@@ -19,4 +19,8 @@ public abstract class Subject {
             o.update(taskName);
         }
     }
+
+    public List<Observer> getObservers() {
+        return this.observers;
+    }
 }

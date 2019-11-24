@@ -84,25 +84,6 @@ public class ToDoListGUI extends JFrame implements ActionListener {
 
     // Reference: https://stackoverflow.com/questions/30265720/java-joptionpane-radio-buttons
     private void actionOne() {
-//        String name = JOptionPane.showInputDialog("Enter the name of the task");
-//        String dueDate = JOptionPane.showInputDialog("Enter the due date in the format: MM/DD/YYYY");
-//        String urgent = null;
-////        String[] values = {"Yes", "No"};
-//        Object selected = JOptionPane.showInputDialog(null, "Is the task urgent?",
-//                null, JOptionPane.QUESTION_MESSAGE,null, new String[]{"Yes", "No"},"No");
-//        if (selected == null) {
-//            JOptionPane.showMessageDialog(null, "The task was not created");
-//        } else if (selected.toString().equals("Yes")) {
-//            urgent = "1";
-//        } else {
-//            urgent = "2";
-//        }
-//        try {
-//            toDoList.addTask(name, dueDate, urgent);
-//        } catch (TooManyThingsToDo tooManyThingsToDo) {
-//            JOptionPane.showMessageDialog(null,
-//                    "There are too many incomplete tasks in your list.");
-//        }
         try {
             toDoList.addTask(JOptionPane.showInputDialog("Enter the name of the task"),
                     JOptionPane.showInputDialog("Enter the due date in the format: MM/DD/YYYY"),
@@ -137,16 +118,20 @@ public class ToDoListGUI extends JFrame implements ActionListener {
 
     // Reference: https://stackoverflow.com/questions/30265720/java-joptionpane-radio-buttons
     private void actionThree() {
-        String list;
-        String[] values = {"View all tasks", "View incomplete tasks only"};
-        Object selected = JOptionPane.showInputDialog(null,
-                "Which tasks would you like to view?",null, JOptionPane.QUESTION_MESSAGE,
-                null, values,"View all tasks");
-        if (selected.toString().equals("View all tasks")) {
-            list = "1";
-        } else {
-            list = "2";
+        try {
+            String list;
+            String[] values = {"View all tasks", "View incomplete tasks only"};
+            Object selected = JOptionPane.showInputDialog(null,
+                    "Which tasks would you like to view?", null, JOptionPane.QUESTION_MESSAGE,
+                    null, values, "View all tasks");
+            if (selected.toString().equals("View all tasks")) {
+                list = "1";
+            } else {
+                list = "2";
+            }
+            toDoList.printCollection(list);
+        } catch (NullPointerException ignored) {
+//
         }
-        toDoList.printCollection(list);
     }
 }

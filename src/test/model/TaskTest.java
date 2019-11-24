@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,6 +16,12 @@ public class TaskTest {
     @BeforeEach
     void setup() {
         regTask = new RegularTask("regular", "12/31/2019");
+    }
+
+    @Test
+    void testSetName() {
+        regTask.setName("Test");
+        assertEquals("Test", regTask.getTaskName());
     }
 
     @Test
@@ -32,7 +40,8 @@ public class TaskTest {
 
     @Test
     void testIsCompletedTrue() {
-        regTask.setName("Test!");
+        ToDoList toDoList = new ToDoList();
+        toDoList.addToIncompleteMap(regTask);
         regTask.isCompleted();
         assertTrue(regTask.getCompleted());
     }
@@ -86,5 +95,37 @@ public class TaskTest {
     void testNotEqualsClass() {
         Task t1 = new UrgentTask("regular", "12/31/2019");
         assertNotEquals(t1, regTask);
+    }
+
+    @Test
+    void testAddObserverEmpty() {
+        assertEquals(0, regTask.getObservers().size());
+    }
+
+    @Test
+    void testAddObserver() {
+        ToDoList toDoList = new ToDoList();
+        regTask.addObserver(toDoList);
+        assertTrue(regTask.getObservers().contains(toDoList));
+        assertEquals(1, regTask.getObservers().size());
+    }
+
+    @Test
+    void testNotifyObservers() {
+        ToDoList toDoList = new ToDoList();
+        toDoList.addToIncompleteMap(regTask);
+        assertTrue(toDoList.getIncompleteTaskMap().containsKey("regular"));
+        regTask.addObserver(toDoList);
+        regTask.isCompleted();
+        assertFalse(toDoList.getIncompleteTaskMap().containsKey("regular"));
+    }
+
+    @Test
+    void testGetObservers() {
+        ToDoList toDoList = new ToDoList();
+        regTask.addObserver(toDoList);
+        List<Observer> list = new ArrayList<>();
+        list.add(toDoList);
+        assertEquals(list, regTask.getObservers());
     }
 }
