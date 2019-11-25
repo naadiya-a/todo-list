@@ -34,6 +34,15 @@ public class TaskTest {
     }
 
     @Test
+    void testInvalidDueDate() {
+        String date = "40/12";
+        regTask.setDueDate(date);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String dueDateAsString = sdf.format(regTask.getDueDate());
+        assertNotEquals(date, dueDateAsString);
+    }
+
+    @Test
     void testIsCompletedFalse() {
         assertFalse(regTask.getCompleted());
     }
@@ -127,5 +136,18 @@ public class TaskTest {
         List<Observer> list = new ArrayList<>();
         list.add(toDoList);
         assertEquals(list, regTask.getObservers());
+    }
+
+    @Test
+    void testEqualsDate() {
+        Task diffDate = new RegularTask("regular", "12/30/2019");
+        assertNotEquals(diffDate, regTask);
+    }
+
+    @Test
+    void testEqualsCompleted() {
+        Task completed = new RegularTask("regular", "12/31/2019");
+        completed.isCompleted();
+        assertNotEquals(completed, regTask);
     }
 }

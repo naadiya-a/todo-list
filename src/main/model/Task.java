@@ -104,24 +104,4 @@ public abstract class Task extends Subject {
     public ToDoList getToDoList() {
         return this.toDoList;
     }
-
-
-    //    public void setDueDate(String date) {
-//        try {
-//            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-//            sdf.setLenient(false);
-//            this.dueDate = sdf.parse(date);
-//            System.out.println(this.taskName + " is due at " + this.dueDate);
-//
-//            // *if moving to ui then change^ to:
-//            // return sdf.parse(date); <-- except use a variable for this
-//
-//            // *then this method would just be:
-//            // this.dueDate = date;
-//        } catch (ParseException e) {
-//            System.out.println("Please enter a valid date");
-//            Scanner sc = new Scanner(System.in);
-//            setDueDate(sc.nextLine());
-//        }
-//    }
 }

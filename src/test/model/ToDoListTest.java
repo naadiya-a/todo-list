@@ -233,4 +233,12 @@ public class ToDoListTest {
         todo.update(t1.getTaskName());
         assertFalse(todo.getIncompleteTaskMap().containsKey("test"));
     }
+
+    @Test
+    void testAlreadyCompleted() {
+        Task t = new RegularTask("test", "11/25/2019");
+        t.isCompleted();
+        todo.addToIncompleteMap(t);
+        assertFalse(todo.getIncompleteTaskMap().containsKey("test"));
+    }
 }

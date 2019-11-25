@@ -98,8 +98,7 @@ public class ToDoList implements Observer {
     // EFFECTS: prints the name, due date, and completed status of each task in the list
     public void printCollection(String list) {
         try {
-            ArrayList<Task> taskList = convertToArray(list);
-            for (Task t : taskList) {
+            for (Task t : convertToArray(list)) {
 //                System.out.print("Name: " + t.getTaskName() + " ");
 //                System.out.print("Due date: " + t.getDueDate() + " ");
 //                System.out.println("Completed status: " + t.getCompleted());
