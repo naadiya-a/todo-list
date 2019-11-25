@@ -13,6 +13,7 @@ public class ToDoList implements Observer {
     private HashMap<String, Task> allTaskMap;
     private HashMap<String, Task> incompleteTaskMap;
     private Save save = new Save();
+    private ImageIcon icon = new ImageIcon("./data/yes.gif");
 
     public ToDoList() {
         allTaskMap = new HashMap<>();
@@ -70,12 +71,15 @@ public class ToDoList implements Observer {
         }
     }
 
+    // Reference: https://stackoverflow.com/questions/30986683/put-a-gif-in-joptionpane/30987192
     // MODIFIES: the specified task
     // EFFECTS: finds completed task from taskList
     public void completeTask(String completeTaskName) {
         if (allTaskMap.containsKey(completeTaskName)) {
             Task t = allTaskMap.get(completeTaskName);
             t.isCompleted();
+            JOptionPane.showMessageDialog(null, "'" + completeTaskName + "' is completed!",
+                    null, JOptionPane.INFORMATION_MESSAGE, icon);
         } else {
             JOptionPane.showMessageDialog(null, "The task was not found");
         }
@@ -99,8 +103,8 @@ public class ToDoList implements Observer {
 //                System.out.print("Name: " + t.getTaskName() + " ");
 //                System.out.print("Due date: " + t.getDueDate() + " ");
 //                System.out.println("Completed status: " + t.getCompleted());
-                JOptionPane.showMessageDialog(null,"Name: " + t.getTaskName()
-                                + "\nDue date: " + t.getDueDate() + "\nCompleted status: " + t.getCompleted());
+                JOptionPane.showMessageDialog(null, "Name: " + t.getTaskName()
+                        + "\nDue date: " + t.getDueDate() + "\nCompleted status: " + t.getCompleted());
             }
         } catch (NullPointerException e) {
 //            System.out.println("The list is empty.");

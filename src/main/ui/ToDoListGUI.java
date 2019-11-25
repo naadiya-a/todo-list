@@ -11,6 +11,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Set;
 
 public class ToDoListGUI extends JFrame implements ActionListener {
 
@@ -20,12 +23,12 @@ public class ToDoListGUI extends JFrame implements ActionListener {
     private ToDoList toDoList = new ToDoList();
 
     // Reference: https://stackoverflow.com/questions/284899/how-do-you-add-an-actionlistener-onto-a-jbutton-in-java
-    public ToDoListGUI() {
+    public ToDoListGUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException,
+            IllegalAccessException {
         super("ToDo List");
 
         JPanel mainPanel = new JPanel();
-        setSize(new Dimension(450, 225));
-//        ((JPanel) getContentPane()).setBorder(new EmptyBorder(16, 13, 13, 13));
+        setSize(new Dimension(450, 250));
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -34,34 +37,38 @@ public class ToDoListGUI extends JFrame implements ActionListener {
             }
         });
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-        JLabel menuLabel = new JLabel("What would you like to-do? (Yes, pun intended)");
+        JLabel menuLabel = new JLabel("What would you like to-do?");
+        JLabel punLabel = new JLabel("(Yes, pun intended)");
         b1 = new JButton("Add a new task");
         b2 = new JButton("Mark a task as completed");
         b3 = new JButton("View your ToDo List");
 
         menuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        punLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         b1.setAlignmentX(Component.CENTER_ALIGNMENT);
         b2.setAlignmentX(Component.CENTER_ALIGNMENT);
         b3.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         menuLabel.setFont(new Font(menuLabel.getFont().getName(), Font.PLAIN, 18));
-        menuLabel.setBorder(new EmptyBorder(18, 0, 12, 0));
-        b1.setMaximumSize(new Dimension(200, 30));
-        b2.setMaximumSize(new Dimension(200, 30));
-        b3.setMaximumSize(new Dimension(200, 30));
+        menuLabel.setBorder(new EmptyBorder(18, 0, 6, 0));
+        punLabel.setFont(new Font(menuLabel.getFont().getName(), Font.PLAIN, 14));
+        punLabel.setBorder(new EmptyBorder(0, 0, 12, 0));
+        b1.setMaximumSize(new Dimension(225, 30));
+        b2.setMaximumSize(new Dimension(225, 30));
+        b3.setMaximumSize(new Dimension(225, 30));
 
         b1.addActionListener(this);
         b2.addActionListener(this);
         b3.addActionListener(this);
 
         mainPanel.add(menuLabel);
+        mainPanel.add(punLabel);
         mainPanel.add(b1);
         mainPanel.add(b2);
         mainPanel.add(b3);
         add(mainPanel);
-
         setVisible(true);
     }
 
@@ -98,7 +105,7 @@ public class ToDoListGUI extends JFrame implements ActionListener {
     private String inputUrgent() {
         String urgent;
         Object selected = JOptionPane.showInputDialog(null, "Is the task urgent?",
-                null, JOptionPane.QUESTION_MESSAGE,null, new String[]{"Yes", "No"},"No");
+                null, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Yes", "No"}, "No");
         if (selected == null) {
             urgent = null;
         } else if (selected.toString().equals("Yes")) {
@@ -110,8 +117,11 @@ public class ToDoListGUI extends JFrame implements ActionListener {
     }
 
     private void actionTwo() {
-        String completedTask = JOptionPane.showInputDialog("Enter the name of the completed task");
-        toDoList.completeTask(completedTask);
+        Set<String> keys = toDoList.getIncompleteTaskMap().keySet();
+        String[] array = keys.toArray(new String[0]);
+        Object task = JOptionPane.showInputDialog(null, "Select the completed task",
+                null, JOptionPane.QUESTION_MESSAGE, null, array, null);
+        toDoList.completeTask((String) task);
     }
 
     // Reference: https://stackoverflow.com/questions/30265720/java-joptionpane-radio-buttons
