@@ -4,6 +4,7 @@ import model.ToDoList;
 import model.TooManyThingsToDo;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,15 +23,9 @@ public class ToDoListGUI extends JFrame implements ActionListener {
     public ToDoListGUI() {
         super("ToDo List");
 
-//        // Reference: https://www.codejava.net/java-se/swing/redirect-standard-output-streams-to-jtextarea
-//        JTextArea textArea = new JTextArea(50, 10);
-//        textArea.setEditable(false);
-//        PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
-//        System.setOut(printStream);
-//        System.setErr(printStream);
-
         JPanel mainPanel = new JPanel();
-        setSize(new Dimension(400, 400));
+        setSize(new Dimension(450, 225));
+//        ((JPanel) getContentPane()).setBorder(new EmptyBorder(16, 13, 13, 13));
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -41,10 +36,21 @@ public class ToDoListGUI extends JFrame implements ActionListener {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel menuLabel = new JLabel("Would you like to:");
+        JLabel menuLabel = new JLabel("What would you like to-do? (Yes, pun intended)");
         b1 = new JButton("Add a new task");
         b2 = new JButton("Mark a task as completed");
         b3 = new JButton("View your ToDo List");
+
+        menuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        b1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        b2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        b3.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        menuLabel.setFont(new Font(menuLabel.getFont().getName(), Font.PLAIN, 18));
+        menuLabel.setBorder(new EmptyBorder(18, 0, 12, 0));
+        b1.setMaximumSize(new Dimension(200, 30));
+        b2.setMaximumSize(new Dimension(200, 30));
+        b3.setMaximumSize(new Dimension(200, 30));
 
         b1.addActionListener(this);
         b2.addActionListener(this);
@@ -57,16 +63,8 @@ public class ToDoListGUI extends JFrame implements ActionListener {
         add(mainPanel);
 
         setVisible(true);
-
-        // Reference: https://docs.oracle.com/javase/tutorial/uiswing/components/toplevel.html
-//        contentPanel = new JPanel(new BorderLayout());
-//        contentPanel.setBorder(someBorder);
-//        contentPanel.add(someComponent, BorderLayout.CENTER);
-//        contentPanel.add(anotherComponent, BorderLayout.PAGE_END);
-//        frame.setContentPane(contentPanel);
     }
 
-    // Reference: https://stackoverflow.com/questions/30265720/java-joptionpane-radio-buttons
     // EFFECTS: identifies the action event from the button click
     //          and calls the appropriate method to present the new option pane
     @Override
@@ -131,7 +129,7 @@ public class ToDoListGUI extends JFrame implements ActionListener {
             }
             toDoList.printCollection(list);
         } catch (NullPointerException ignored) {
-//
+            // do nothing
         }
     }
 }

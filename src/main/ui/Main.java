@@ -1,6 +1,5 @@
 package ui;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public class Main {
@@ -9,6 +8,4 @@ public class Main {
 //        new UserInput();
         new ToDoListGUI();
     }
-
-
 }
