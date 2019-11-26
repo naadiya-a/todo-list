@@ -20,7 +20,7 @@ public class ToDoList implements Observer {
         incompleteTaskMap = new HashMap<>();
     }
 
-    // MODIFIES: allTaskMap, incompleteTaskMap
+    // MODIFIES: this
     // EFFECTS: adds new task to the task maps
     public void addTask(String newTaskName, String newDueDate, String urgent) throws TooManyThingsToDo {
         Task newTask;
